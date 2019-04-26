@@ -1,0 +1,8 @@
+test hola
+while
+if
+numero
+numeric
+3.0
+3.a
+END OF FILE
