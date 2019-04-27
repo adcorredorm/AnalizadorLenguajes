@@ -1,0 +1,4 @@
+! exclaim_symbol
+@ arroba_symbol
+while while_keyword
+. point_operator

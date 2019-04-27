@@ -15,7 +15,7 @@ public class Token {
 
     @Override
     public String toString(){
-        //TODO: TokenType
+        //TODO: Revisar
         return "" + '<' + tokenType + ',' + lexeme + ',' + row + ',' + column + '>';
     }
 
