@@ -26,8 +26,8 @@ public class Token {
 
     @Override
     public String toString(){
-        if(reservedWord) return "" + '<' + tokenType + ',' + row + ',' + column + '>';
-        return "" + '<' + tokenType + ',' + lexeme + ',' + row + ',' + column + '>';
+        if(reservedWord) return "" + '<' + tokenType + ',' + row + ',' + (column+1) + '>';
+        return "" + '<' + tokenType + ',' + lexeme + ',' + row + ',' + (column+1) + '>';
     }
 
 }

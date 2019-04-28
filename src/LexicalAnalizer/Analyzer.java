@@ -38,7 +38,8 @@ public class Analyzer {
         while(line != null){
             descriptor = line.split(" ");
             literalTokens.put(descriptor[0], descriptor[1]);
-            line = reader.readLine();
+            do line = reader.readLine();
+                while(line != null && line.length() == 0);
         }
     }
 
@@ -128,15 +129,15 @@ public class Analyzer {
     public Token makeToken(String lexem){
 
         if(literalTokens.containsKey(lexem))
-            return new Token(literalTokens.get(lexem), lexem, column, row, true);
+            return new Token(literalTokens.get(lexem), lexem, row, column, true);
 
         if(Character.isDigit(lexem.charAt(0)))
-            return new Token(Token.Numeric, lexem, column, row);
+            return new Token(Token.Numeric, lexem, row, column);
 
         if(lexem.charAt(0) == '"')
-            return new Token(Token.String, lexem, column, row);
+            return new Token(Token.String, lexem, row, column);
 
-        return new Token(Token.Identifier, lexem, column, row);
+        return new Token(Token.Identifier, lexem, row, column);
     }
 
     public static void main(String[] args) throws IOException{

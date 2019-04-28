@@ -1,16 +1,14 @@
-test hola
-while
-if
+//comentario
+var
+    n, suma, k : numerico
 
-//Este es un comentario
-numeric //Aca va otro
-3.0
-/* Este es multilinea
-aaaa
-*/             mas codigo
-/* este tambien debe ignorarlo */ //Y aca tambien
-3.a
-"String"
-END OF FILE
-/
-/*
+inicio
+    imprimir ("Suma n pares hasta n."," Ingrese n: ")
+    leer (n)
+    suma = 0.0
+    desde k=2 hasta n paso 2
+    {
+        suma = suma + k
+    }
+    imprimir ("La suma es", suma)
+fin

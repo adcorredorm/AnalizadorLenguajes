@@ -1,4 +1,18 @@
-! exclaim_symbol
-@ arroba_symbol
-while while_keyword
-. point_operator
+var tk_var
+, tk_coma
+: tk_dospuntos
+numerico tk_numerico
+inicio tk_inicio
+imprimir tk_imprimir
+( tk_par_izq
+) tk_par_der
+= tk_asignacion
+desde tk_desde
+
+hasta tk_hasta
+paso tk_paso
+{ tk_llave_izq
+} tk_llave_der
++ tk_suma
+fin tk_fin
+leer tk_leer
