@@ -8,10 +8,7 @@ import java.util.HashMap;
 public class Analyzer {
 
     /*TODO:
-     * Leer e ignorar comentarios
      * Describir el lengueje asignado xD
-     * Lectura de Strings "String"
-     * TokenType como clase (o almenos como un string)
      * Pendiente Refactor
      */
 
@@ -21,6 +18,7 @@ public class Analyzer {
     private String buffer;
     private HashMap<String, String> literalTokens;
     private Automaton automaton;
+    private boolean error = false;
 
     public Analyzer(String srcPath, String TokenDescription) throws IOException{
         this.literalTokens = new HashMap<>();
@@ -36,36 +34,78 @@ public class Analyzer {
     private void parseTokenDescription(String TokenDescription) throws IOException{
         BufferedReader reader = new BufferedReader(new FileReader(TokenDescription));
         String line = reader.readLine();
+        String[] descriptor;
         while(line != null){
-            String[] descriptor = line.split(" ");
+            descriptor = line.split(" ");
             literalTokens.put(descriptor[0], descriptor[1]);
             line = reader.readLine();
         }
     }
 
-    public Token nextToken() throws IOException{
-        if(buffer.length() - column == 0){
-            buffer = reader.readLine();
-            row++;
-            column = 0;
-            if(buffer == null) return new Token(-1, "EOF", row, column);
+    public boolean hasNext(){
+        return buffer != null && !error;
+    }
+
+    private void readLine() throws IOException{
+        buffer = reader.readLine();
+        row++;
+        column = 0;
+    }
+
+    //Posiciona el marcador de columna en la siguiente posicion a leer
+    private void nextPosition() throws IOException{
+        //Si termino el buffer encuentra la siguiente fila no vacia
+        while(buffer.length() - column == 0){
+            readLine();
+            if(buffer == null) return;
         }
 
+        //Ignora los espacios y tabulaciones que hay frente al marcador
+        while(column < buffer.length() && (buffer.charAt(column) == ' ' || buffer.charAt(column) == '\t'))
+            column++;
+
+        //Ignora los comentarios de linea
+        while(column + 1 < buffer.length() && buffer.substring(column,column+2).equals("//")){
+            readLine();
+            if(buffer == null) return;
+        }
+
+        //Ignora los comentarios de multiple linea
+        while(column + 1 < buffer.length() && buffer.substring(column,column+2).equals("/*")){
+            while(!buffer.contains("*/")){
+                readLine();
+                if(buffer == null) return;
+            }
+            column = buffer.indexOf("*/") + 2;
+
+            //Debe realizarse denuevo la comprobacion de comentarios y espacios
+            nextPosition();
+        }
+    }
+
+    public Token nextToken() throws IOException{
+        if(!hasNext()) return new ErrorToken(row, column);
+
+        nextPosition();
+        if(buffer == null) return new Token(Token.EOF, "", row, column, true);
+
+        int i = column, acceptation;
         int lastAccepted = column;
         boolean rejected = false;
-        while( column < buffer.length() && (buffer.charAt(column) == ' ' || buffer.charAt(column) == '\t')) column++;
-
-        int i = column;
         StringBuilder builder = new StringBuilder();
 
-        while(i < buffer.length()){
+        while(i < buffer.length() && !rejected){
             builder.append(buffer.charAt(i));
-            if(literalTokens.containsKey(builder.toString())) lastAccepted = i+1;
+            if(literalTokens.containsKey(builder.toString())) lastAccepted = ++i;
             else{
-                int acceptation = automaton.process(builder.toString());
+                acceptation = automaton.process(builder.toString());
                 switch (acceptation){
                     case Automaton.ACCEPTED:
-                        lastAccepted = i+1;
+                        lastAccepted = ++i;
+                        break;
+
+                    case Automaton.POSIBLE:
+                        i++;
                         break;
 
                     case Automaton.REJECTED:
@@ -73,29 +113,35 @@ public class Analyzer {
                         break;
                 }
             }
-            if(rejected) break;
-            i++;
         }
 
-        if(i == column) return new Token(-2,"Lexical Error", row, column);
+        if(i == column){
+            error = true;
+            return new ErrorToken(row, column);
+        }
 
-        String lexem = builder.substring(0, lastAccepted-column);
-
-        Token t;
-        if(literalTokens.containsKey(lexem))
-            t = new Token(0, literalTokens.get(lexem), column, row);
-        else if(Character.isDigit(builder.charAt(0)))
-            t = new Token(1, lexem, column, row);
-        else t = new Token(2, lexem, column, row);
-
+        Token t = makeToken(builder.substring(0, lastAccepted-column));
         column = lastAccepted;
-
         return t;
+    }
+
+    public Token makeToken(String lexem){
+
+        if(literalTokens.containsKey(lexem))
+            return new Token(literalTokens.get(lexem), lexem, column, row, true);
+
+        if(Character.isDigit(lexem.charAt(0)))
+            return new Token(Token.Numeric, lexem, column, row);
+
+        if(lexem.charAt(0) == '"')
+            return new Token(Token.String, lexem, column, row);
+
+        return new Token(Token.Identifier, lexem, column, row);
     }
 
     public static void main(String[] args) throws IOException{
         Analyzer Analyzer = new Analyzer("Input/code.txt", "Input/description.txt");
-        for (int i = 0; i < 14; i++) {
+        while(Analyzer.hasNext()) {
             System.out.println(Analyzer.nextToken().toString());
         }
     }

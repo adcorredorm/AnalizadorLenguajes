@@ -37,10 +37,8 @@ public class Automaton {
     public static final int POSIBLE  = 0;
     public static final int REJECTED = -1;
 
-    private HashMap<Integer, State> states;
     private State initialState;
     private HashSet<Character> validVariables;
-    private HashSet<Character> validNumeric;
 
     public Automaton(){
         this.initialState = new State(false);
@@ -55,8 +53,8 @@ public class Automaton {
         validVariables.add('_');
 
         State varState = new State(true);
-        initialState.addTransition('e', varState);
-        varState.addTransition('e', varState);
+        initialState.addTransition('a', varState);
+        varState.addTransition('a', varState);
         varState.addTransition('0', varState);
 
         State numState = new State(true);
@@ -72,6 +70,13 @@ public class Automaton {
         numState.addTransition("e+0", cintfState);
         cintfState.addTransition('0', cintfState);
 
+        State strState = new State(false);
+        initialState.addTransition('"', strState);
+        strState.addTransition('a', strState);
+        strState.addTransition('0', strState);
+        strState.addTransition('*', strState);
+        strState.addTransition('"', new State(true));
+
     }
 
     public int process(String target){
@@ -79,10 +84,13 @@ public class Automaton {
         State actualState = initialState;
 
         for(char c: target.toCharArray()){
-            if(validVariables.contains(c)) c = 'e';
-            if(Character.isDigit(c)) c = '0';
-
-            actualState = actualState.nextState(c);
+            if(actualState.nextState(c) != null) actualState = actualState.nextState(c);
+            else{
+                if(validVariables.contains(c)) c = 'a';
+                else if(Character.isDigit(c)) c = '0';
+                else c = '*';
+                actualState = actualState.nextState(c);
+            }
             if(actualState == null) return REJECTED;
         }
         if(actualState.finalState) value = ACCEPTED;
@@ -91,7 +99,7 @@ public class Automaton {
     }
 
     public static void main(String[] args) {
-        String s = "3.a";
+        String s = "___";
         System.out.println(new Automaton().process(s));
 
     }

@@ -1,8 +1,16 @@
 test hola
 while
 if
-numero
-numeric
+
+//Este es un comentario
+numeric //Aca va otro
 3.0
+/* Este es multilinea
+aaaa
+*/             mas codigo
+/* este tambien debe ignorarlo */ //Y aca tambien
 3.a
+"String"
 END OF FILE
+/
+/*
