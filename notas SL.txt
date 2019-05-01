@@ -1,0 +1,25 @@
+--lexer
+identificadores de 32 char (ñ incluida)
+palabras reservadas pag 16
+un numero valido es 5e-3
+un token numerico uede empezar con - o + tambien
+una cadena con apostrofe ‘ tambien forma un string valido (hay que ignorar el \")
+\* representa un solo caracter
+si, no, true, false son constantes predefinidas
+operandores pag 36
+asignacion =, asignacion de tipo :
+llaves para sentencias condicionales
+* sirve para arreglos dinamicos
+funciones predefinidas pag 130
+
+--gramatica
+los idntificadores se definnen antes de su uso (excepto subprogramas)
+las sentencias pueden ir en varias lines
+una misma lines puede tener varias sentencias delimitadas por ;
+sintaxis general pag 18
+a un numero lo puede preceder un + o un -
++ tambien sirve para concatenar cadenas
+declaracion de vectores pag 28 matrices pag 30
+precedencia de operadores pag 40
+sentencias cap 7 pag 43
+
