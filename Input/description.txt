@@ -1,18 +1,79 @@
+letra tk_letra
+e tk_letrae
+' tk_comilla_simple
+" tk_comilla_doble
+
+\n tk_salto_de_linea
+\r tk_inicio_de_linea
+\t tk_tabulador
+
+TRUE tk_verdadero
+FALSE tk_falso
+
+SI tk_si
+NO tk_no
+SINO tk_sino
+
+and tk_conjunción
+or tk_disyunción
+not tk_negación
+
+numero tk_numero
+matriz tk_matriz
+vector tk_vector
++ tk_suma
+- tk_resta
+* tk_asterísco
+/ tk_división
+% tk_módulo
+^ tk_potencia
+
+= tk_asignacion
+< tk_menor
+> tk_mayor
+<= tk_mayor_o_igual
+>= tk_mayor_o_igual
+== tk_igual_que
+<> tk_distinto_de
+
 var tk_var
+= tk_asignacion
 , tk_coma
 : tk_dospuntos
-numerico tk_numerico
-inicio tk_inicio
-imprimir tk_imprimir
+
 ( tk_par_izq
 ) tk_par_der
-= tk_asignacion
-desde tk_desde
-
-hasta tk_hasta
-paso tk_paso
 { tk_llave_izq
 } tk_llave_der
-+ tk_suma
+
+var tk_var
+const tk_constantes
+constantes tk_constantes
+tipos tk_tipos
+registro tk_registro
+variables tk_variables
+
+cadena tk_cadena
+logico tk_logico
+numerico tk_numerico
+
+archivo tk_archivo
+lib tk_lib
+libext tk_libext
+
+caso tk_caso
+eval tk_eval
+
+desde tk_desde
+hasta tk_hasta
+paso tk_paso
+mientras tk_mientras
+repetir tk_repetir
+inicio tk_inicio
 fin tk_fin
-leer tk_leer
+
+subrutina tk_subrutina
+retorna tk_retorna
+ref tk_ref
+
+programa tk_programa
