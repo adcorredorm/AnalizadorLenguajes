@@ -10,7 +10,7 @@ e tk_letrae
 TRUE tk_verdadero
 FALSE tk_falso
 
-SI tk_si //¿case sensitive con el if?
+SI tk_si
 NO tk_no
 SINO tk_sino
 
@@ -21,9 +21,9 @@ not tk_negación
 numero tk_numero
 matriz tk_matriz
 vector tk_vector
-+ tk_suma  //¿O identidad de signo?
-- tk_resta  //¿O cambio de signo?
-* tk_asterísco //tema de vectores
++ tk_suma
+- tk_resta
+* tk_asterísco
 / tk_división
 % tk_módulo
 ^ tk_potencia
@@ -48,14 +48,14 @@ var tk_var
 
 var tk_var
 const tk_constantes
-¿constantes tk_constantes?
+constantes tk_constantes
 tipos tk_tipos
 registro tk_registro
 variables tk_variables
 
 archivo tk_archivo
 lib tk_lib
-¿libext tk_libext?
+libext tk_libext
 
 caso tk_caso
 eval tk_eval
