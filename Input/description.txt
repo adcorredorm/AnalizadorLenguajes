@@ -53,6 +53,10 @@ tipos tk_tipos
 registro tk_registro
 variables tk_variables
 
+cadena tk_cadena
+logico tk_logico
+numerico tk_numerico
+
 archivo tk_archivo
 lib tk_lib
 libext tk_libext
