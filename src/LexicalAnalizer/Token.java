@@ -3,9 +3,9 @@ package LexicalAnalizer;
 public class Token {
 
     public static final String EOF = "EOF";
-    public static final String Numeric = "Tk_Numeric";
-    public static final String Identifier = "Tk_Identifier";
-    public static final String String = "Tk_String";
+    public static final String Numeric = "tk_numerico";
+    public static final String Identifier = "tk_identificador";
+    public static final String String = "tk_cadena";
 
 
     protected String tokenType, lexeme;

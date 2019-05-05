@@ -51,36 +51,61 @@ public class Automaton {
         for(int i = 'a'; i <= 'z'; i++) validVariables.add((char)i);
         for(int i = 'A'; i <= 'Z'; i++) validVariables.add((char)i);
         validVariables.add('_');
+        validVariables.add('ñ');
+        validVariables.add('Ñ');
 
+        //Identificadores
         State varState = new State(true);
         initialState.addTransition('a', varState);
         varState.addTransition('a', varState);
         varState.addTransition('0', varState);
 
+        //Numeros enteros
         State numState = new State(true);
         initialState.addTransition('0', numState);
         numState.addTransition('0', numState);
 
+        //Numeros reales
         State realState = new State(true);
         numState.addTransition(".0", realState);
         realState.addTransition('0', realState);
 
-        State cintfState = new State(true);
-        realState.addTransition("e+0", cintfState);
-        numState.addTransition("e+0", cintfState);
-        cintfState.addTransition('0', cintfState);
+        //Numeros en notacion cientifica
+        State cintfState = new State(false);
+        realState.addTransition('e', cintfState);
+        numState.addTransition('e', cintfState);
+        State signState = new State(false);
+        cintfState.addTransition('+', signState);
+        cintfState.addTransition('-', signState);
+        State aprovalState = new State(true);
+        signState.addTransition('0', aprovalState);
+        aprovalState.addTransition('0', aprovalState);
 
+        //Cadenas empezadas con " (comilla doble)
         State strState = new State(false);
         initialState.addTransition('"', strState);
         strState.addTransition('a', strState);
         strState.addTransition('0', strState);
         strState.addTransition('*', strState);
+        State scapeState = new State(false);
+        strState.addTransition('\\', scapeState);
+        scapeState.addTransition('*', strState);
         strState.addTransition('"', new State(true));
+
+        //Cadenas empezadas con ' (comilla simple)
+        State strState2 = new State(false);
+        initialState.addTransition('\'', strState);
+        strState.addTransition('a', strState);
+        strState.addTransition('0', strState);
+        strState.addTransition('*', strState);
+        State scapeState2 = new State(false);
+        strState.addTransition('\\', scapeState2);
+        scapeState2.addTransition('*', strState);
+        strState.addTransition('\'', new State(true));
 
     }
 
     public int process(String target){
-        int value = POSIBLE;
         State actualState = initialState;
 
         for(char c: target.toCharArray()){
@@ -93,14 +118,13 @@ public class Automaton {
             }
             if(actualState == null) return REJECTED;
         }
-        if(actualState.finalState) value = ACCEPTED;
+        if(actualState.finalState) return ACCEPTED;
 
-        return value;
+        return POSIBLE;
     }
 
     public static void main(String[] args) {
-        String s = "___";
+        String s = "";
         System.out.println(new Automaton().process(s));
-
     }
 }
