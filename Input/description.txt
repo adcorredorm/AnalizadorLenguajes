@@ -1,24 +1,15 @@
-letra tk_letra
-e tk_letrae
-' tk_comilla_simple
-" tk_comilla_doble
-
-\n tk_salto_de_linea
-\r tk_inicio_de_linea
-\t tk_tabulador
-
 TRUE tk_verdadero
 FALSE tk_falso
-
 SI tk_si
 NO tk_no
-SINO tk_sino
+
+si tk_if
+sino tk_elseif
 
 and tk_conjunción
 or tk_disyunción
 not tk_negación
 
-numero tk_numero
 matriz tk_matriz
 vector tk_vector
 + tk_suma
@@ -36,7 +27,6 @@ vector tk_vector
 == tk_igual_que
 <> tk_distinto_de
 
-var tk_var
 = tk_asignacion
 , tk_coma
 : tk_dospuntos
@@ -47,11 +37,11 @@ var tk_var
 } tk_llave_der
 
 var tk_var
+variables tk_variables
 const tk_constantes
 constantes tk_constantes
 tipos tk_tipos
 registro tk_registro
-variables tk_variables
 
 cadena tk_cadena
 logico tk_logico
