@@ -142,7 +142,7 @@ public class Analyzer {
         if(Character.isDigit(lexem.charAt(0)))
             return new Token(Token.Numeric, lexem, row, column);
 
-        if(lexem.charAt(0) == '"')
+        if(lexem.charAt(0) == '"' || lexem.charAt(0) == '\'')
             return new Token(Token.String, lexem, row, column);
 
         return new Token(Token.Identifier, lexem, row, column);
