@@ -12,8 +12,6 @@ not tk_negación
 
 matriz tk_matriz
 vector tk_vector
-. tk_punto
-; tk_punto_y_coma
 + tk_suma
 - tk_resta
 * tk_asterísco
@@ -30,13 +28,17 @@ vector tk_vector
 <> tk_distinto_de
 
 = tk_asignacion
+. tk_punto
 , tk_coma
+; tk_punto_y_coma
 : tk_dospuntos
 
 ( tk_par_izq
 ) tk_par_der
 { tk_llave_izq
 } tk_llave_der
+[ tk_corchete_izq
+] tk_corchete_der
 
 var tk_var
 variables tk_variables
