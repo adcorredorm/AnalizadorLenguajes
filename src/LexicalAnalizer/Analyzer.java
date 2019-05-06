@@ -70,6 +70,7 @@ public class Analyzer {
             readLine();
             if(buffer == null) return;
             nextPosition(); //fix
+            if(buffer == null) return;
         }
 
         //Ignora los comentarios de multiple linea
@@ -82,6 +83,7 @@ public class Analyzer {
 
             //Debe realizarse denuevo la comprobacion de comentarios y espacios
             nextPosition();
+            if(buffer == null) return;
         }
     }
 
@@ -128,6 +130,11 @@ public class Analyzer {
     }
 
     public Token makeToken(String lexem){
+
+        if(lexem.length() == 0){
+            error = true;
+            return new ErrorToken(row, column);
+        }
 
         if(literalTokens.containsKey(lexem))
             return new Token(literalTokens.get(lexem), lexem, row, column, true);
