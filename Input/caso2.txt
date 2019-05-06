@@ -2,10 +2,7 @@
 , : ; 
 = + * - / ^ %
 < <= > >= == <>
-
 [ ] ( ) { }
-
-gdfads
 and or not
 
 // Identificadores:

@@ -74,6 +74,8 @@ public class Automaton {
         State cintfState = new State(false);
         realState.addTransition('e', cintfState);
         numState.addTransition('e', cintfState);
+        realState.addTransition('E', cintfState);
+        numState.addTransition('E', cintfState);
         State signState = new State(false);
         cintfState.addTransition('+', signState);
         cintfState.addTransition('-', signState);
@@ -91,18 +93,22 @@ public class Automaton {
         State scapeState = new State(false);
         strState.addTransition('\\', scapeState);
         scapeState.addTransition('*', strState);
+        scapeState.addTransition('0', strState);
+        scapeState.addTransition('a', strState);
         strState.addTransition('"', new State(true));
 
         //Cadenas empezadas con ' (comilla simple)
         State strState2 = new State(false);
-        initialState.addTransition('\'', strState);
-        strState.addTransition('a', strState);
-        strState.addTransition('0', strState);
-        strState.addTransition('*', strState);
+        initialState.addTransition('\'', strState2);
+        strState2.addTransition('a', strState2);
+        strState2.addTransition('0', strState2);
+        strState2.addTransition('*', strState2);
         State scapeState2 = new State(false);
-        strState.addTransition('\\', scapeState2);
-        scapeState2.addTransition('*', strState);
-        strState.addTransition('\'', new State(true));
+        strState2.addTransition('\\', scapeState2);
+        scapeState2.addTransition('*', strState2);
+        scapeState2.addTransition('0', strState2);
+        scapeState2.addTransition('a', strState2);
+        strState2.addTransition('\'', new State(true));
 
     }
 
@@ -125,7 +131,7 @@ public class Automaton {
     }
 
     public static void main(String[] args) {
-        String s = "";
+        String s = "..";
         System.out.println(new Automaton().process(s));
     }
 }

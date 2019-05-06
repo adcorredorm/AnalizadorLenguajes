@@ -49,6 +49,7 @@ public class Analyzer {
 
     private void readLine() throws IOException{
         buffer = reader.readLine();
+        if (buffer != null) buffer = buffer.trim();
         row++;
         column = 0;
     }
