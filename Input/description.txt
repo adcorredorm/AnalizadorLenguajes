@@ -12,6 +12,7 @@ not tk_negación
 
 matriz tk_matriz
 vector tk_vector
+. tk_punto
 + tk_suma
 - tk_resta
 * tk_asterísco

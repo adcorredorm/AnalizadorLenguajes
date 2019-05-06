@@ -1,7 +1,8 @@
 //comentario
+
 var
     n, suma, k : numerico
-
+    m : cadena
 inicio
     imprimir ("Suma n pares hasta n."," Ingrese n: ")
     leer (n)

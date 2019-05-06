@@ -78,6 +78,7 @@ public class Automaton {
         cintfState.addTransition('+', signState);
         cintfState.addTransition('-', signState);
         State aprovalState = new State(true);
+        cintfState.addTransition('0', aprovalState); //fix
         signState.addTransition('0', aprovalState);
         aprovalState.addTransition('0', aprovalState);
 

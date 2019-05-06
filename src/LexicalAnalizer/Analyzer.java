@@ -69,6 +69,7 @@ public class Analyzer {
         while(column + 1 < buffer.length() && buffer.substring(column,column+2).equals("//")){
             readLine();
             if(buffer == null) return;
+            nextPosition(); //fix
         }
 
         //Ignora los comentarios de multiple linea
