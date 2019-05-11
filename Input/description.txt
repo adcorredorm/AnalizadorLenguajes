@@ -1,7 +1,7 @@
-TRUE tk_verdadero
-FALSE tk_falso
-SI tk_si
-NO tk_no
+TRUE tk_logico
+FALSE tk_logico
+SI tk_logico
+NO tk_logico
 
 si tk_if
 sino tk_elseif

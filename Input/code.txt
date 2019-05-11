@@ -1,5 +1,5 @@
 // Símbolos
-, : ; 
+, : ;
 = + * - / ^ %
 < <= > >= == <>
 
@@ -11,8 +11,8 @@ and or not
 // Identificadores:
 CANTIDAD cantidad Cantidad
 id1ConÑ ID2_con_ñ
-/* comentario 
+/* comentario
 
 // esto no deberia importar
-  
+
 multilinea */

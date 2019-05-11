@@ -8,6 +8,6 @@ public class ErrorToken extends Token{
 
     @Override
     public String toString(){
-        return ">>> Error Lexico(linea:" + row + ", posicion:" + column + ')';
+        return ">>> Error Lexico(linea:" + (row+1) + ", posicion:" + (column+1) + ')';
     }
 }
