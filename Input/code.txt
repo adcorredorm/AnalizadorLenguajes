@@ -1,18 +1,1 @@
-// Símbolos
-, : ; 
-= + * - / ^ %
-< <= > >= == <>
-
-[ ] ( ) { }
-
-gdfads
-and or not
-
-// Identificadores:
-CANTIDAD cantidad Cantidad
-id1ConÑ ID2_con_ñ
-/* comentario 
-
-// esto no deberia importar
-  
-multilinea */
+a s

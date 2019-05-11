@@ -7,11 +7,6 @@ import java.util.HashMap;
 
 public class Analyzer {
 
-    /*TODO:
-     * Describir el lengueje asignado xD
-     * Pendiente Refactor
-     */
-
     private BufferedReader reader;
     private int row;
     private int column;
