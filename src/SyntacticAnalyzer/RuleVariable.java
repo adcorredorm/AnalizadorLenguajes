@@ -2,6 +2,9 @@ package SyntacticAnalyzer;
 
 public class RuleVariable {
 
+    public static final RuleVariable EPSILON = new RuleVariable("#", true);
+    public static final RuleVariable EOF = new RuleVariable("§", true);
+
     protected boolean isTerminal;
     protected boolean isRoot;
     protected String value;

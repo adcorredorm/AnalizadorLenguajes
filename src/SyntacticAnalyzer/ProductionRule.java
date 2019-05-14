@@ -26,7 +26,8 @@ public class ProductionRule {
                     break;
 
                 case '>':
-                    variables.add(new RuleVariable(builder.toString(), true));
+                    if(builder.toString().equals("#")) variables.add(RuleVariable.EPSILON);
+                    else variables.add(new RuleVariable(builder.toString(), true));
                     builder = new StringBuilder();
                     break;
 

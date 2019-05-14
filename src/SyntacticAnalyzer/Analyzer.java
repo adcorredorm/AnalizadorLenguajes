@@ -4,11 +4,14 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public class Analyzer {
 
-    HashMap<String, LinkedList<ProductionRule>> rules;
+
+
+    private HashMap<String, LinkedList<ProductionRule>> rules;
 
     Analyzer(String grammarPath)throws IOException {
         this.rules = new HashMap<>();
@@ -34,6 +37,41 @@ public class Analyzer {
             }
 
             line = br.readLine();
+        }
+
+        /* Aca inicia la construccion de el conjunto de prediccion */
+
+        HashMap<String, HashSet<RuleVariable>> first = new HashMap<>();
+
+        for(String key : rules.keySet()) first.put(key, new HashSet<>());
+
+        boolean changes;
+        do {
+            changes = false;
+            for(String key : rules.keySet()){
+                int elements = first.get(key).size();
+                for(ProductionRule P : rules.get(key)){
+                    for(RuleVariable var : P.variables){
+                        if(var.isTerminal){
+                            first.get(key).add(var);
+                            break;
+                        }else{
+                            first.get(key).addAll(first.get(var.value));
+                            if(!first.get(var.value).contains(RuleVariable.EPSILON))
+                                break;
+                        }
+                    }
+                }
+                changes |= first.get(key).size() > elements;
+            }
+        }while (changes);
+
+        for(String key : first.keySet()){
+            System.out.println(key + ":");
+            for(RuleVariable v : first.get(key)){
+                System.out.print(v.value + " ");
+            }
+            System.out.println();
         }
     }
 
