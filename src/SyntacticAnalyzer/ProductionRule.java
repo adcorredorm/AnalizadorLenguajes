@@ -12,7 +12,7 @@ public class ProductionRule{
     protected String production;
     protected ArrayList<RuleVariable> variables;
     protected HashMap<String, Integer> variablesString;
-    protected HashSet<RuleVariable> prediction;
+    protected HashSet<String> prediction;
 
     ProductionRule(String head, String production){
         this.head = head;
@@ -37,8 +37,8 @@ public class ProductionRule{
         }
     }
 
-    public void addPrediction(RuleVariable prediction){
-        this.prediction.add(prediction);
+    public void addPrediction(HashSet<String> prediction){
+        this.prediction.addAll(prediction);
     }
 
     public HashSet getPrediction(){

@@ -117,7 +117,7 @@ public class Analyzer {
                                         copy.remove(RuleVariable.EPSILON.value);
                                         next.get(key).addAll(copy);
                                         i++;
-                                        if(P.variables.get(index+i).isTerminal) {
+                                        if(i < P.variables.size() && P.variables.get(index+i).isTerminal) {
                                             next.get(key).add(P.variables.get(index + i).value);
                                             break;
                                         }
@@ -141,6 +141,41 @@ public class Analyzer {
                 System.out.print(v + " ");
             }
             System.out.println();
+        }
+
+        for(String key : rules.keySet()){
+            for(ProductionRule P : rules.get(key)){
+                int i = 0;
+                do{
+                    if(P.variables.get(i).isTerminal){
+                        if(P.variables.get(i).value.equals(RuleVariable.EPSILON.value))
+                            P.prediction.addAll(next.get(P.head));
+                        else P.prediction.add(P.variables.get(i).value);
+                        break;
+                    }else{
+                        HashSet<String> copy = new HashSet<>(first.get(P.variables.get(i).value));
+                        copy.remove(RuleVariable.EPSILON.value);
+                        P.prediction.addAll(copy);
+                        i++;
+                    }
+                }while(i < P.variables.size() && first.get(P.variables.get(i-1).value).contains(RuleVariable.EPSILON.value));
+
+                if(i == P.variables.size()){
+                    P.prediction.addAll(next.get(P.head));
+                    P.prediction.remove(RuleVariable.EPSILON.value);
+                }
+            }
+        }
+
+        System.out.println("Prediccion");
+        for(String key : rules.keySet()){
+            for(ProductionRule P : rules.get(key)){
+                System.out.print(P + "\t");
+                for(String pred : P.prediction){
+                    System.out.print(pred + ",");
+                }
+                System.out.println();
+            }
         }
     }
 
