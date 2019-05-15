@@ -56,6 +56,7 @@ public class Analyzer {
                             first.get(key).add(var);
                             break;
                         }else{
+                            //Si NullPointerError, probablemente se este dando una Terminal como No Terminal
                             first.get(key).addAll(first.get(var.value));
                             if(!first.get(var.value).contains(RuleVariable.EPSILON))
                                 break;
@@ -78,7 +79,7 @@ public class Analyzer {
     public static void main(String[] args) throws IOException{
         Analyzer a = new Analyzer("Input/grammar.txt");
         for(String h : a.rules.keySet()){
-            for(ProductionRule r : a.rules.get(h)) System.out.println(r);
+            //for(ProductionRule r : a.rules.get(h)) System.out.println(r);
         }
     }
 }
