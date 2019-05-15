@@ -18,4 +18,16 @@ public class RuleVariable {
     RuleVariable(String value, boolean isTerminal){
         this(value, isTerminal, false);
     }
+
+    @Override
+    public String toString(){
+        return value;
+    }
+
+    @Override
+    public int hashCode(){
+        return value.hashCode();
+    }
+
+
 }

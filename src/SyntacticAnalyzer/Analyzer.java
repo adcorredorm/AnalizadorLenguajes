@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Analyzer {
@@ -53,17 +54,26 @@ public class Analyzer {
             for(String key : rules.keySet()){
                 int elements = first.get(key).size();
                 for(ProductionRule P : rules.get(key)){
-                    for(RuleVariable var : P.variables){
+                    if(P.production.equals(RuleVariable.EPSILON.value)){
+                        first.get(key).add(RuleVariable.EPSILON);
+                        continue;
+                    }
+
+                    Iterator<RuleVariable> iterator = P.variables.iterator();
+                    while(iterator.hasNext()){
+                        RuleVariable var = iterator.next();
                         if(var.isTerminal){
                             first.get(key).add(var);
                             break;
                         }else{
                             //Si NullPointerError, probablemente se este dando una Terminal como No Terminal
-                            first.get(key).addAll(first.get(var.value));
-                            if(!first.get(var.value).contains(RuleVariable.EPSILON)) {
-                                first.get(key).remove(RuleVariable.EPSILON);
-                                break;
-                            }
+                            HashSet<RuleVariable> copy = new HashSet<>(first.get(var.value));
+                            copy.remove(RuleVariable.EPSILON);
+                            first.get(key).addAll(copy);
+
+                            if(first.get(var.value).contains(RuleVariable.EPSILON)
+                                    && !iterator.hasNext())
+                                first.get(key).add(RuleVariable.EPSILON);
                         }
                     }
                 }
@@ -72,7 +82,7 @@ public class Analyzer {
         }while (changes);
 
         for(String key : first.keySet()){
-            System.out.println(key + ":");
+            System.out.print(key + ": ");
             for(RuleVariable v : first.get(key)){
                 System.out.print(v.value + " ");
             }
@@ -82,8 +92,13 @@ public class Analyzer {
 
     public static void main(String[] args) throws IOException{
         Analyzer a = new Analyzer("Input/grammar.txt");
-        for(String h : a.rules.keySet()){
-            //for(ProductionRule r : a.rules.get(h)) System.out.println(r);
+        HashSet<String> h = new HashSet<>();
+        String y = "a";
+        h.add(y);
+        String x = "a";
+        h.add(x);
+        for(String w : h){
+            System.out.println(w);
         }
     }
 }
