@@ -22,8 +22,10 @@ public class Analyzer {
         BufferedReader br = new BufferedReader(new FileReader(grammarPath));
         String line = br.readLine();
         while (line != null && line.length() > 0){
-            for(String s : line.split(","))
+            for(String s : line.split(",")) {
                 rules.put(s, new LinkedList<>());
+                ProductionRule.NoTerminals.add(s);
+            }
             line = br.readLine();
         }
 
@@ -58,8 +60,10 @@ public class Analyzer {
                         }else{
                             //Si NullPointerError, probablemente se este dando una Terminal como No Terminal
                             first.get(key).addAll(first.get(var.value));
-                            if(!first.get(var.value).contains(RuleVariable.EPSILON))
+                            if(!first.get(var.value).contains(RuleVariable.EPSILON)) {
+                                first.get(key).remove(RuleVariable.EPSILON);
                                 break;
+                            }
                         }
                     }
                 }

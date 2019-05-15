@@ -5,6 +5,8 @@ import java.util.HashSet;
 
 public class ProductionRule {
 
+    public static HashSet<String> NoTerminals = new HashSet<>();
+
     protected String head;
     protected String production;
     protected ArrayList<RuleVariable> variables;
@@ -16,28 +18,17 @@ public class ProductionRule {
         this.variables = new ArrayList<>();
         this.prediction = new HashSet<>();
 
-        StringBuilder builder = new StringBuilder();
-        for(char c : production.toCharArray()){
-            switch (c){
-                case '<':
-                    if(builder.length() > 0)
-                        variables.add(new RuleVariable(builder.toString(), false));
-                    builder = new StringBuilder();
-                    break;
+        String[] variables = production.split(">");
 
-                case '>':
-                    if(builder.toString().equals("#")) variables.add(RuleVariable.EPSILON);
-                    else variables.add(new RuleVariable(builder.toString(), true));
-                    builder = new StringBuilder();
-                    break;
-
-                default:
-                    builder.append(c);
-                    break;
+        for(String var : variables){
+            var = var.substring(1); //Elimina el simbolo <
+            if(var.equals(RuleVariable.EPSILON.value)){
+                this.variables.add(RuleVariable.EPSILON);
+                continue;
             }
+            boolean status = !NoTerminals.contains(var);
+            this.variables.add(new RuleVariable(var, status));
         }
-        if(builder.length() > 0)
-            variables.add(new RuleVariable(builder.toString(), false));
     }
 
     public void addPrediction(RuleVariable prediction){
@@ -54,7 +45,8 @@ public class ProductionRule {
     }
 
     public static void main(String[] args) {
-        for(RuleVariable s : new ProductionRule("S", "a<hola><hola2>xD").variables)
+        ProductionRule.NoTerminals.add("a");
+        for(RuleVariable s : new ProductionRule("S", "<a><hola><hola2><xD>").variables)
             System.out.println(s.value + " " + s.isTerminal);
     }
 }
