@@ -24,10 +24,4 @@ public class RuleVariable {
         return value;
     }
 
-    @Override
-    public int hashCode(){
-        return value.hashCode();
-    }
-
-
 }

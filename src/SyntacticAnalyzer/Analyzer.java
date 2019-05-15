@@ -44,7 +44,7 @@ public class Analyzer {
 
         /* Aca inicia la construccion de el conjunto de prediccion */
 
-        HashMap<String, HashSet<RuleVariable>> first = new HashMap<>();
+        HashMap<String, HashSet<String>> first = new HashMap<>();
 
         for(String key : rules.keySet()) first.put(key, new HashSet<>());
 
@@ -54,26 +54,26 @@ public class Analyzer {
             for(String key : rules.keySet()){
                 int elements = first.get(key).size();
                 for(ProductionRule P : rules.get(key)){
-                    if(P.production.equals(RuleVariable.EPSILON.value)){
-                        first.get(key).add(RuleVariable.EPSILON);
+                    /*if(P.production.equals(RuleVariable.EPSILON.value)){
+                        first.get(key).add(RuleVariable.EPSILON.value);
                         continue;
-                    }
+                    }*/
 
                     Iterator<RuleVariable> iterator = P.variables.iterator();
                     while(iterator.hasNext()){
                         RuleVariable var = iterator.next();
                         if(var.isTerminal){
-                            first.get(key).add(var);
+                            first.get(key).add(var.value);
                             break;
                         }else{
                             //Si NullPointerError, probablemente se este dando una Terminal como No Terminal
-                            HashSet<RuleVariable> copy = new HashSet<>(first.get(var.value));
-                            copy.remove(RuleVariable.EPSILON);
+                            HashSet<String> copy = new HashSet<>(first.get(var.value));
+                            copy.remove(RuleVariable.EPSILON.value);
                             first.get(key).addAll(copy);
 
-                            if(first.get(var.value).contains(RuleVariable.EPSILON)
+                            if(first.get(var.value).contains(RuleVariable.EPSILON.value)
                                     && !iterator.hasNext())
-                                first.get(key).add(RuleVariable.EPSILON);
+                                first.get(key).add(RuleVariable.EPSILON.value);
                         }
                     }
                 }
@@ -83,8 +83,8 @@ public class Analyzer {
 
         for(String key : first.keySet()){
             System.out.print(key + ": ");
-            for(RuleVariable v : first.get(key)){
-                System.out.print(v.value + " ");
+            for(String v : first.get(key)){
+                System.out.print(v + " ");
             }
             System.out.println();
         }
@@ -92,13 +92,5 @@ public class Analyzer {
 
     public static void main(String[] args) throws IOException{
         Analyzer a = new Analyzer("Input/grammar.txt");
-        HashSet<String> h = new HashSet<>();
-        String y = "a";
-        h.add(y);
-        String x = "a";
-        h.add(x);
-        for(String w : h){
-            System.out.println(w);
-        }
     }
 }
