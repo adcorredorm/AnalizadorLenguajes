@@ -41,15 +41,15 @@ vector tk_vector
 ] tk_corchete_der
 
 var tk_var
-variables tk_variables
-const tk_constantes
-constantes tk_constantes
+variables tk_var
+const tk_const
+constantes tk_const
 tipos tk_tipos
 registro tk_registro
 
-cadena tk_cadena
-logico tk_logico
-numerico tk_numerico
+cadena tk_cadenaRW
+logico tk_logicoRW
+numerico tk_numericoRW
 
 archivo tk_archivo
 lib tk_lib
