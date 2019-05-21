@@ -1,2 +1,6 @@
-a tk_a
-s tk_s
+uno uno
+dos dos
+tres tres
+cuatro cuatro
+cinco cinco
+seis seis

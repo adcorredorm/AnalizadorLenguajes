@@ -2,13 +2,13 @@ package LexicalAnalizer;
 
 public class Token {
 
-    public static final String EOF = "EOF";
+    public static final String EOF = "§";
     public static final String Numeric = "tk_num";
     public static final String Identifier = "tk_identificador";
     public static final String String = "tk_texto";
 
 
-    protected String tokenType, lexeme;
+    public String tokenType, lexeme;
     protected int row, column;
     protected boolean reservedWord;
 

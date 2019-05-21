@@ -1,5 +1,7 @@
 package SyntacticAnalyzer;
 
+import LexicalAnalizer.Token;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -16,6 +18,8 @@ public class Analyzer {
     Analyzer(String grammarPath)throws IOException {
         this.rules = new HashMap<>();
         makePrediction(grammarPath);
+        verify();
+        analize();
     }
 
     private void makePrediction(String grammarPath) throws IOException {
@@ -175,6 +179,75 @@ public class Analyzer {
 
             if(copy.contains(RuleVariable.EPSILON.value)){
                 next.get(target).addAll(next.get(rule.head));
+            }
+        }
+    }
+
+    public void analize() throws IOException{
+        LexicalAnalizer.Analyzer lexer =
+                new LexicalAnalizer.Analyzer("Input/code.txt", "Input/description.txt");
+
+        Stack<String> stack = new Stack<>();
+        stack.add(rootVariable);
+
+        Token actualToken = lexer.nextToken();
+        String lastNoTerminal = rootVariable;
+
+        while (lexer.hasNext() && !stack.empty()){
+            String variable = stack.pop();
+            if(variable.equals(RuleVariable.EPSILON.value))
+                continue;
+            if(rules.containsKey(variable)){
+                //No Terminal
+                lastNoTerminal = variable;
+                for(ProductionRule P : rules.get(variable)){
+                    if(P.getPrediction().contains(actualToken.tokenType)){
+                        for(int i = P.variablesString.size()-1; i >= 0; i--){
+                            stack.add(P.variables.get(i).value);
+                        }
+                        break;
+                    }
+                }
+            }else{
+                //Terminal
+                if(!variable.equals(actualToken.tokenType)){
+
+                    break;
+                }
+                actualToken = lexer.nextToken();
+            }
+        }
+        System.out.println("finish");
+
+        if(stack.empty() && !lexer.hasNext()){
+            System.out.println("OK!");
+        }else{
+            System.out.println("Error");
+            System.out.println("Se esperaba:");
+            for(ProductionRule P : rules.get(lastNoTerminal)){
+                for(String pred : (HashSet<String>)P.getPrediction()){
+                    System.out.println(pred);
+                }
+            }
+        }
+    }
+
+    public void verify(){
+        for(String variable : rules.keySet()){
+            for(ProductionRule P1 : rules.get(variable)){
+                for(ProductionRule P2 : rules.get(variable)){
+                    if(P2.equals(P1)) continue;
+                    for(String pred : (HashSet<String>)P2.getPrediction()){
+                        if(P1.getPrediction().contains(pred)){
+                            System.out.print("La regla ");
+                            System.out.print(P1);
+                            System.out.print(" y la regla ");
+                            System.out.print(P2);
+                            System.out.print("tienen en comun la prediccion ");
+                            System.out.println(pred);
+                        }
+                    }
+                }
             }
         }
     }

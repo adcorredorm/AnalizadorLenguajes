@@ -1,15 +1,9 @@
 S
 A,B
-C,D
 
-S := <A><uno><B><C>
-S := <S><dos>
-A := <B><C><D>
-A := <A><tres>
-A := <#>
-B := <D><cuatro><C><tres>
+S := <A><uno><B>
+S := <dos><S>
+A := <tres><A>
+A := <cuatro>
+B := <cuatro>
 B := <#>
-C := <cinco><D><B>
-C := <#>
-D := <seis>
-D := <#>
