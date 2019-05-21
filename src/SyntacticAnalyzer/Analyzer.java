@@ -3,16 +3,14 @@ package SyntacticAnalyzer;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 
 public class Analyzer {
 
 
 
     private HashMap<String, LinkedList<ProductionRule>> rules;
+    HashMap<String, HashSet<String>> first;
     private String rootVariable;
 
     Analyzer(String grammarPath)throws IOException {
@@ -52,7 +50,7 @@ public class Analyzer {
 
         /* Aca inicia la construccion de el conjunto de prediccion */
 
-        HashMap<String, HashSet<String>> first = new HashMap<>();
+        first = new HashMap<>();
 
         for(String key : rules.keySet()) first.put(key, new HashSet<>());
 
@@ -62,7 +60,7 @@ public class Analyzer {
             for(String key : rules.keySet()){
                 int elements = first.get(key).size();
                 for(ProductionRule P : rules.get(key)){
-                    Iterator<RuleVariable> iterator = P.variables.iterator();
+                    /*Iterator<RuleVariable> iterator = P.variables.iterator();
                     while(iterator.hasNext()){
                         RuleVariable var = iterator.next();
                         if(var.isTerminal){
@@ -78,7 +76,9 @@ public class Analyzer {
                                     && !iterator.hasNext())
                                 first.get(key).add(RuleVariable.EPSILON.value);
                         } //TODO: No es necesario tener las constantes de RuleVariable, solo el valor
-                    }
+                    }*/
+                    HashSet<String> temp = first.get(key);
+                    Primeros(temp, P.variables);
                 }
                 changes |= first.get(key).size() > elements;
             }
@@ -117,11 +117,11 @@ public class Analyzer {
                                         copy.remove(RuleVariable.EPSILON.value);
                                         next.get(key).addAll(copy);
                                         i++;
-                                        if(i < P.variables.size() && P.variables.get(index+i).isTerminal) {
+                                        if(index+i < P.variables.size() && P.variables.get(index+i).isTerminal) {
                                             next.get(key).add(P.variables.get(index + i).value);
                                             break;
                                         }
-                                    }while( i < P.variables.size() &&
+                                    }while( index+i < P.variables.size() &&
                                             first.get(P.variables.get(index+i).value).contains(RuleVariable.EPSILON.value));
 
                                     if(i == P.variables.size())  next.get(key).addAll(next.get(P.head));
@@ -179,7 +179,37 @@ public class Analyzer {
         }
     }
 
+    public void Primeros(HashSet set, ArrayList<RuleVariable> variables){
+        RuleVariable head = variables.get(0);
+        if(head.equals(RuleVariable.EPSILON)){
+            set.add(RuleVariable.EPSILON.value);
+            return;
+        }
+        if(head.isTerminal)
+            set.add(head.value);
+        else{
+            HashSet<String> copy = new HashSet<>(first.get(head.value));
+            copy.remove(RuleVariable.EPSILON.value);
+            set.addAll(copy);
+            if(first.get(head.value).contains(RuleVariable.EPSILON.value)){
+                if(variables.size() > 1)
+                    Primeros(set, new ArrayList<>(variables.subList(1, variables.size())));
+                else
+                    set.add(RuleVariable.EPSILON.value);
+            }
+        }
+
+    }
+
     public static void main(String[] args) throws IOException{
         Analyzer a = new Analyzer("Input/grammar.txt");
     }
 }
+
+/*
+* Primeros de S no va dos
+* Siguientes de B va $
+* Siguientes de C va uno
+* Siguientes de D va fin de cadena y dos
+*
+* */
