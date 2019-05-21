@@ -10,7 +10,7 @@ public class Analyzer {
 
 
     private HashMap<String, LinkedList<ProductionRule>> rules;
-    HashMap<String, HashSet<String>> first;
+    HashMap<String, HashSet<String>> first, next;
     private String rootVariable;
 
     Analyzer(String grammarPath)throws IOException {
@@ -60,25 +60,8 @@ public class Analyzer {
             for(String key : rules.keySet()){
                 int elements = first.get(key).size();
                 for(ProductionRule P : rules.get(key)){
-                    /*Iterator<RuleVariable> iterator = P.variables.iterator();
-                    while(iterator.hasNext()){
-                        RuleVariable var = iterator.next();
-                        if(var.isTerminal){
-                            first.get(key).add(var.value);
-                            break;
-                        }else{
-                            //Si NullPointerError, probablemente se este dando una Terminal como No Terminal
-                            HashSet<String> copy = new HashSet<>(first.get(var.value));
-                            copy.remove(RuleVariable.EPSILON.value);
-                            first.get(key).addAll(copy);
-
-                            if(first.get(var.value).contains(RuleVariable.EPSILON.value)
-                                    && !iterator.hasNext())
-                                first.get(key).add(RuleVariable.EPSILON.value);
-                        } //TODO: No es necesario tener las constantes de RuleVariable, solo el valor
-                    }*/
-                    HashSet<String> temp = first.get(key);
-                    Primeros(temp, P.variables);
+                    Primeros(first.get(key), P.variables);
+                    //TODO: No es necesario tener las constantes de RuleVariable, solo el valor
                 }
                 changes |= first.get(key).size() > elements;
             }
@@ -93,44 +76,20 @@ public class Analyzer {
             System.out.println();
         }
 
-        HashMap<String, HashSet<String>> next = new HashMap<>();
+        next = new HashMap<>();
         for(String key : rules.keySet()) next.put(key, new HashSet<>());
         next.get(rootVariable).add(RuleVariable.EOF.value);
 
         do{
             changes = false;
             for(String key: rules.keySet()){
-                int elements = rules.get(key).size();
+                int elements = next.get(key).size();
                 for (String head: rules.keySet()){
                     for(ProductionRule P : rules.get(head)){
-                        Integer index = P.variablesString.get(key);
-                        if(index != null){
-                            if(index == P.variables.size()-1){
-                                next.get(key).addAll(next.get(P.head));
-                            }else{
-                                if(P.variables.get(index+1).isTerminal)
-                                    next.get(key).add(P.variables.get(index+1).value);
-                                else{
-                                    int i = 1;
-                                    do{
-                                        HashSet<String> copy = new HashSet<>(first.get(P.variables.get(index+i).value));
-                                        copy.remove(RuleVariable.EPSILON.value);
-                                        next.get(key).addAll(copy);
-                                        i++;
-                                        if(index+i < P.variables.size() && P.variables.get(index+i).isTerminal) {
-                                            next.get(key).add(P.variables.get(index + i).value);
-                                            break;
-                                        }
-                                    }while( index+i < P.variables.size() &&
-                                            first.get(P.variables.get(index+i).value).contains(RuleVariable.EPSILON.value));
-
-                                    if(i == P.variables.size())  next.get(key).addAll(next.get(P.head));
-                                }
-                            }
-                        }
+                        Siguientes(P, key);
                     }
                 }
-                changes |= elements < rules.get(key).size();
+                changes |= elements < next.get(key).size();
             }
         }while(changes);
 
@@ -179,7 +138,12 @@ public class Analyzer {
         }
     }
 
-    public void Primeros(HashSet set, ArrayList<RuleVariable> variables){
+    public void Primeros(HashSet set, List<RuleVariable> variables){
+        if(variables.size() == 0){
+            set.add(RuleVariable.EPSILON.value);
+            return;
+        }
+
         RuleVariable head = variables.get(0);
         if(head.equals(RuleVariable.EPSILON)){
             set.add(RuleVariable.EPSILON.value);
@@ -193,12 +157,26 @@ public class Analyzer {
             set.addAll(copy);
             if(first.get(head.value).contains(RuleVariable.EPSILON.value)){
                 if(variables.size() > 1)
-                    Primeros(set, new ArrayList<>(variables.subList(1, variables.size())));
+                    Primeros(set, variables.subList(1, variables.size()));
                 else
                     set.add(RuleVariable.EPSILON.value);
             }
         }
 
+    }
+
+    public void Siguientes(ProductionRule rule, String target){
+        Integer index = rule.variablesString.get(target);
+        if(index != null){
+            HashSet<String> copy = new HashSet<>();
+            Primeros(copy, rule.variables.subList(index+1, rule.variables.size()));
+            next.get(target).addAll(copy);
+            next.get(target).remove(RuleVariable.EPSILON.value);
+
+            if(copy.contains(RuleVariable.EPSILON.value)){
+                next.get(target).addAll(next.get(rule.head));
+            }
+        }
     }
 
     public static void main(String[] args) throws IOException{
