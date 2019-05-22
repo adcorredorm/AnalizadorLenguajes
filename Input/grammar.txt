@@ -13,8 +13,8 @@ OperacionMatematica,OperacionMatematica2
 TipoDato
 VariantesIgualdad
 ListaId
-Variables,VariablesFix,Variables2,Variables2Fix
-Tipos
+Variables,VariablesAux,VariablesFix,Variables2,Variables2Fix
+Tipos, Tipos2
 Estructura
 Dim,Dim1,Dim2,DimFix
 Registro
@@ -56,11 +56,13 @@ OperacionMatematica2 := <Operador><OperacionMatematica>,<#>
 TipoDato := <tk_numericoRW>,<tk_cadenaRW>,<tk_logicoRW>,<tk_id>,<Estructura>,<Registro>
 VariantesIgualdad := <tk_dospuntos>,<tk_asignacion>
 ListaId := <tk_coma><tk_id><ListaId>,<#>
-Variables := <tk_id><VariablesFix>
+Variables := <tk_var><VariablesAux>
+VariablesAux := <tk_id><VariablesFix>
 VariablesFix := <ListaId><tk_dospuntos><TipoDato><Variables2>,<tk_asignacion><Dato><Variables2>
 Variables2 := <tk_id><Variables2Fix>
-Variables2Fix := <ListaId><tk_dospuntos><TipoDato><Variables2>,<tk_asignacion><Dato><Variables>
-Tipos := <tk_id><tk_dospuntos><TipoDato><Tipos>
+Variables2Fix := <ListaId><tk_dospuntos><TipoDato><Variables2>,<tk_asignacion><Dato><VariablesAux>
+Tipos := <tk_tipos><tk_id><tk_dospuntos><TipoDato><Tipos2>
+Tipos2 := <tk_id><tk_dospuntos><TipoDato><Tipos2>
 Estructura := <tk_vector><tk_corchete_izq><Dim1><tk_corchete_der><TipoDato>,<tk_matriz><tk_corchete_izq><Dim><tk_corchete_der><TipoDato>
 Dim1 := <tk_asterísco>,<tk_numericoRW>
 Dim := <Dim1><tk_coma><Dim2>
