@@ -66,7 +66,7 @@ repetir tk_repetir
 inicio tk_inicio
 fin tk_fin
 
-... puntos_suspensivos
+... tk_puntos_suspensivos
 
 subrutina tk_subrutina
 retorna tk_retorna
