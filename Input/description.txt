@@ -22,7 +22,7 @@ vector tk_vector
 = tk_asignacion
 < tk_menor
 > tk_mayor
-<= tk_mayor_o_igual
+<= tk_menor_o_igual
 >= tk_mayor_o_igual
 == tk_igual_que
 <> tk_distinto_de
