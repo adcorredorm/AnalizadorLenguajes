@@ -34,7 +34,7 @@ Metodo
 Funcion
 ParametrosSubrutina,ListaParametrosSubrutina
 VectorInit,ValoresVector,ListaDatos
-MatrizInit,ListaVector,ListaMatrices
+MatrizInit,ListaVector,ListaVector2,ListaMatrices
 
 S := <Programa><Declaraciones><tk_inicio><Sentencias><tk_fin><Subrutinas>
 Programa := <tk_programa><tk_id>,<#>
@@ -98,5 +98,6 @@ VectorInit := <tk_llave_izq><ValoresVector><tk_llave_der>
 ValoresVector := <Dato><ListaDatos>,<tk_coma><tk_puntos_suspensivos>,<#>
 ListaDatos := <#>,<tk_coma><Dato><ListaDatos>
 MatrizInit := <tk_llave_izq><VectorInit><ListaVector><tk_llave_der>
-ListaVector := <tk_coma><VectorInit><ListaVector>,<tk_coma><tk_puntos_suspensivos>,<#>
+ListaVector := <tk_coma><ListaVector2>,<#>
+ListaVector2 := <VectorInit><ListaVector>,<tk_puntos_suspensivos>
 ListaMatrices := <tk_coma><MatrizInit><ListaMatrices>,<tk_coma><tk_puntos_suspensivos>,<#>
