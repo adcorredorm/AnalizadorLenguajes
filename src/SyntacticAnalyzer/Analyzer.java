@@ -180,6 +180,7 @@ public class Analyzer {
 
         while (lexer.hasNext() && !stack.empty()){
             variable = stack.pop();
+            System.out.println(variable);
             if(variable.equals(RuleVariable.EPSILON.value))
                 continue;
             if(rules.containsKey(variable)){
