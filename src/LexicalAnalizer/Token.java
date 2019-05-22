@@ -4,8 +4,8 @@ public class Token {
 
     public static final String EOF = "§";
     public static final String Numeric = "tk_num";
-    public static final String Identifier = "tk_identificador";
-    public static final String String = "tk_texto";
+    public static final String Identifier = "tk_id";
+    public static final String String = "tk_cadena";
 
 
     public String tokenType, lexeme;

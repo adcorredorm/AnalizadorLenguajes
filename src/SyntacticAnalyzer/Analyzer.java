@@ -79,6 +79,7 @@ public class Analyzer {
             }
             System.out.println();
         }
+        System.out.println("\n\n\n");
 
         next = new HashMap<>();
         for(String key : rules.keySet()) next.put(key, new HashSet<>());
@@ -105,6 +106,7 @@ public class Analyzer {
             }
             System.out.println();
         }
+        System.out.println("\n\n\n");
 
         for(String key : rules.keySet()){
             for(ProductionRule P : rules.get(key)){
@@ -140,6 +142,7 @@ public class Analyzer {
                 System.out.println();
             }
         }
+        System.out.println("\n\n\n");
     }
 
     public void Primeros(HashSet set, List<RuleVariable> variables){
