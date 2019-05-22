@@ -4,7 +4,6 @@ Declaraciones
 PuntoyComa
 Identificador,Identificador2
 Constantes,Constantes2
-TiposConstantes
 EsNumero
 Dato,Dato2
 CadenaRecursiva,CadenaRecursiva2
@@ -43,9 +42,8 @@ Declaraciones := <Constantes><PuntoyComa><Declaraciones>,<Tipos><PuntoyComa><Dec
 PuntoyComa := <tk_punto_y_coma>,<#>
 Identificador := <tk_id><Identificador2>
 Identificador2 := <#>,<tk_punto><tk_id>
-Constantes := <tk_const><tk_id><tk_asignacion><TiposConstantes><Constantes2>
-Constantes2 := <tk_id><tk_asignacion><TiposConstantes><Constantes2>,<#>
-TiposConstantes := <tk_id>,<tk_numericoRW>,<tk_logicoRW>,<tk_cadenaRW>
+Constantes := <tk_const><tk_id><tk_asignacion><Dato><Constantes2>
+Constantes2 := <tk_id><tk_asignacion><Dato><Constantes2>,<#>
 EsNumero := <Identificador>,<tk_num>,<tk_suma><tk_num>,<tk_resta><tk_num>,<OperacionMatematica>,<LlamadoFuncion>
 Dato := <tk_cadena><Dato2>,<EsNumero>,<tk_logico>,<Estructura>,<Registro>
 Dato2 := <#>,<tk_suma><CadenaRecursiva>
@@ -65,32 +63,32 @@ Variables2Fix := <ListaId><tk_dospuntos><TipoDato><Variables2>,<tk_asignacion><D
 Tipos := <tk_tipos><tk_id><tk_dospuntos><TipoDato><Tipos2>
 Tipos2 := <tk_id><tk_dospuntos><TipoDato><Tipos2>
 Estructura := <tk_vector><tk_corchete_izq><Dim1><tk_corchete_der><TipoDato>,<tk_matriz><tk_corchete_izq><Dim><tk_corchete_der><TipoDato>
-Dim1 := <tk_asterísco>,<tk_numericoRW>
+Dim1 := <tk_asterísco>,<EsNumero>
 Dim := <Dim1><tk_coma><Dim2>
 Dim2 := <Dim1><DimFix>
 DimFix := <#>,<tk_coma><dim2>
-Registro := <tk_registro><tk_llave_izq><Variables><tk_llave_der>
+Registro := <tk_registro><tk_llave_izq><VariablesAux><tk_llave_der>
 Sentencias := <SolucionExpress><Sentencias>,<EstructuraControl><Sentencias>,<#>
 SolucionExpress := <tk_id><SolucionExpress2>
 SolucionExpress2 := <tk_par_izq><Parametros><tk_par_der>,<tk_asignacion><Dato><SolucionExpress3>
-SolucionExpress3 := <tk_suma><Dato>,<#>
+SolucionExpress3 := <Operador><Dato><SolucionExpress3>,<#>
 LlamadoFuncion := <tk_id><tk_par_izq><Parametros><tk_par_der>
 Parametros := <Identificador><ListaParametros>,<Dato><ListaParametros>,<LlamadoFuncion><ListaParametros>,<#>
 ListaParametros := <tk_coma><ListaParametros2>,<#>
 ListaParametros2 := <Identificador><ListaParametros>,<Dato><ListaParametros>,<LlamadoFuncion><ListaParametros>
 Asignacion := <Identificador><tk_asignacion><Dato>
 EstructuraControl := <If>,<Mientras>,<RepetirHasta>,<Desde>,<Eval>
-If := <tk_if><tk_par_izq><Condicion><tk_par_der><tk_llave_izq><Sentencias><Aux>
+If := <tk_if><tk_par_izq><ExpresionLogica><tk_par_der><tk_llave_izq><Sentencias><Aux>
 Aux := <tk_elseif><Aux2>
 Aux2 := <Sentencias><tk_llave_der>,<tk_if><Sentencias><Aux3>
 Aux3 := <Aux>,<Sino><tk_llave_der>
-Mientras := <tk_mientras><tk_par_izq><Condicion><tk_par_der><tk_llave_izq><Sentencias><tk_llave_der>
-RepetirHasta := <tk_repetir><Sentencias><tk_hasta><tk_par_izq><Condicion><tk_par_der>
+Mientras := <tk_mientras><tk_par_izq><ExpresionLogica><tk_par_der><tk_llave_izq><Sentencias><tk_llave_der>
+RepetirHasta := <tk_repetir><Sentencias><tk_hasta><tk_par_izq><ExpresionLogica><tk_par_der>
 Desde := <tk_desde><tk_id><tk_asignacion><EsNumero><tk_hasta><EsNumero><Paso><tk_llave_izq><Sentencias><tk_llave_der>
 Paso := <tk_paso><EsNumero>,<#>
 Eval := <tk_eval><tk_llave_izq><Casos><Sino><tk_llave_der>
-Casos := <tk_caso><tk_par_izq><Condicion><tk_par_der><Sentencias><Casos>,<#>
-Sino := <tk_elseif><tk_par_izq><Condicion><tk_par_der><Sentencias>,<#>
+Casos := <tk_caso><tk_par_izq><ExpresionLogica><tk_par_der><Sentencias><Casos>,<#>
+Sino := <tk_elseif><tk_par_izq><ExpresionLogica><tk_par_der><Sentencias>,<#>
 ExpresionLogica := <tk_logico><ExpresionLogica2>,<tk_id><ExpresionLogica2>,<tk_negación><ExpresionLogica><ExpresionLogica2>,<LlamadoFuncion><ExpresionLogica2>,<Comparación><ExpresionLogica2>,<tk_par_izq><ExpresionLogica><tk_par_der><ExpresionLogica2>
 ExpresionLogica2 := <tk_conjunción><ExpresionLogica>,<tk_disyunción><ExpresionLogica>,<#>
 Comparacion := <ValoresComparacion><OperadorComparacion><ValoresComparacion>
@@ -101,7 +99,7 @@ Subrutinabase2 := <Metodo>,<Funcion>
 Metodo := <Declaraciones><tk_inicio><Sentencias><tk_fin><Subrutinabase>
 Funcion := <tk_retorna><tk_id><Declaraciones><tk_inicio><Sentencias><tk_retorna><tk_par_izq><tk_id><tk_par_der><tk_fin><Subrutinabase>
 ParametrosSubrutina := <#>,<Identificador><tk_dospuntos><TipoDato><ListaParametrosSubrutina>,<tk_ref><Identificador><tk_dospuntos><TipoDato><ListaParametrosSubrutina>
-ListaParametrosSubrutina := <#>,<Identificador><tk_dospuntos><TipoDato><ListaParametrosSubrutina>
+ListaParametrosSubrutina := <#>,<tk_coma><Identificador><tk_dospuntos><TipoDato><ListaParametrosSubrutina>
 VectorInit := <tk_llave_izq><ValoresVector><tk_llave_der>
 ValoresVector := <Dato><ListaDatos>,<tk_coma><tk_puntos_suspensivos>,<#>
 ListaDatos := <#>,<tk_coma><Dato><ListaDatos>

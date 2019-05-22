@@ -9,7 +9,7 @@ public class Token {
 
 
     public String tokenType, lexeme;
-    protected int row, column;
+    public int row, column;
     protected boolean reservedWord;
 
     public Token(String tokenType, String lexeme, int row, int column, boolean reservedWord){

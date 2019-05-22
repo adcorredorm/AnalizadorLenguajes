@@ -18,7 +18,7 @@ public class Analyzer {
     Analyzer(String grammarPath)throws IOException {
         this.rules = new HashMap<>();
         makePrediction(grammarPath);
-        verify();
+        //verify();
         analize();
     }
 
@@ -71,7 +71,7 @@ public class Analyzer {
             }
         }while (changes);
 
-        System.out.println("Primeros");
+        /*System.out.println("Primeros");
         for(String key : first.keySet()){
             System.out.print(key + ": ");
             for(String v : first.get(key)){
@@ -79,7 +79,7 @@ public class Analyzer {
             }
             System.out.println();
         }
-        System.out.println("\n\n\n");
+        System.out.println("\n\n\n");*/
 
         next = new HashMap<>();
         for(String key : rules.keySet()) next.put(key, new HashSet<>());
@@ -98,7 +98,7 @@ public class Analyzer {
             }
         }while(changes);
 
-        System.out.println("Siguientes");
+        /*System.out.println("Siguientes");
         for(String key : next.keySet()){
             System.out.print(key + ": ");
             for(String v : next.get(key)){
@@ -106,34 +106,15 @@ public class Analyzer {
             }
             System.out.println();
         }
-        System.out.println("\n\n\n");
+        System.out.println("\n\n\n");*/
 
         for(String key : rules.keySet()){
             for(ProductionRule P : rules.get(key)){
-                /*int i = 0;
-                do{
-                    if(P.variables.get(i).isTerminal){
-                        if(P.variables.get(i).value.equals(RuleVariable.EPSILON.value))
-                            P.prediction.addAll(next.get(P.head));
-                        else P.prediction.add(P.variables.get(i).value);
-                        break;
-                    }else{
-                        HashSet<String> copy = new HashSet<>(first.get(P.variables.get(i).value));
-                        copy.remove(RuleVariable.EPSILON.value);
-                        P.prediction.addAll(copy);
-                        i++;
-                    }
-                }while(i < P.variables.size() && first.get(P.variables.get(i-1).value).contains(RuleVariable.EPSILON.value));
-
-                if(i == P.variables.size()){
-                    P.prediction.addAll(next.get(P.head));
-                    P.prediction.remove(RuleVariable.EPSILON.value);
-                }*/
                 prediction(P);
             }
         }
 
-        System.out.println("Prediccion");
+        /*System.out.println("Prediccion");
         for(String key : rules.keySet()){
             for(ProductionRule P : rules.get(key)){
                 System.out.print(P + "\t");
@@ -143,7 +124,7 @@ public class Analyzer {
                 System.out.println();
             }
         }
-        System.out.println("\n\n\n");
+        System.out.println("\n\n\n");*/
     }
 
     public void Primeros(HashSet set, List<RuleVariable> variables){
@@ -195,15 +176,14 @@ public class Analyzer {
         stack.add(rootVariable);
 
         Token actualToken = lexer.nextToken();
-        String lastNoTerminal = rootVariable;
+        String variable = rootVariable;
 
         while (lexer.hasNext() && !stack.empty()){
-            String variable = stack.pop();
+            variable = stack.pop();
             if(variable.equals(RuleVariable.EPSILON.value))
                 continue;
             if(rules.containsKey(variable)){
                 //No Terminal
-                lastNoTerminal = variable;
                 for(ProductionRule P : rules.get(variable)){
                     if(P.getPrediction().contains(actualToken.tokenType)){
                         for(int i = P.variables.size()-1; i >= 0; i--){
@@ -223,27 +203,31 @@ public class Analyzer {
         }
 
         while(!stack.empty()){ //Vacia la pila de todas la No terminales que no se pueden eliminar
-            String variable = stack.pop();
-            if(rules.containsKey(variable)){
+            String variable2 = stack.pop();
+            if(rules.containsKey(variable2)){
                 boolean flag = false;
-                for(ProductionRule P : rules.get(variable)){
+                for(ProductionRule P : rules.get(variable2)){
                     if(!P.variables.get(0).value.equals(RuleVariable.EPSILON.value)) flag = true;
                 }
                 if(!flag) break;
             }else break;
         }
-        System.out.println("finish");
 
         if(stack.empty() && !lexer.hasNext()){
-            System.out.println("OK!");
+            System.out.println("El analisis sintactico ha finalizado exitosamente.");
         }else{
-            System.out.println("Error");
-            System.out.println("Se esperaba:");
-            for(ProductionRule P : rules.get(lastNoTerminal)){
-                for(String pred : (HashSet<String>)P.getPrediction()){
-                    System.out.println(pred);
-                }
-            }
+            System.out.print("<" + actualToken.row + "," + actualToken.column + ">");
+            System.out.println(" Error sintactico: se encontro: " + actualToken.lexeme + " ;");
+            System.out.print("Se esperaba: ");
+
+            if(rules.containsKey(variable)){
+                HashSet<String> aux = new HashSet<>();
+                for(ProductionRule P : rules.get(variable))
+                    aux.addAll(P.getPrediction());
+                for(String s : aux) System.out.print(s + ",");
+
+            }else System.out.println(variable);
+
         }
     }
 
