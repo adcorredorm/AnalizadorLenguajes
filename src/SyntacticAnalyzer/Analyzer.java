@@ -110,7 +110,7 @@ public class Analyzer {
 
         for(String key : rules.keySet()){
             for(ProductionRule P : rules.get(key)){
-                int i = 0;
+                /*int i = 0;
                 do{
                     if(P.variables.get(i).isTerminal){
                         if(P.variables.get(i).value.equals(RuleVariable.EPSILON.value))
@@ -128,7 +128,8 @@ public class Analyzer {
                 if(i == P.variables.size()){
                     P.prediction.addAll(next.get(P.head));
                     P.prediction.remove(RuleVariable.EPSILON.value);
-                }
+                }*/
+                prediction(P);
             }
         }
 
@@ -205,7 +206,7 @@ public class Analyzer {
                 lastNoTerminal = variable;
                 for(ProductionRule P : rules.get(variable)){
                     if(P.getPrediction().contains(actualToken.tokenType)){
-                        for(int i = P.variablesString.size()-1; i >= 0; i--){
+                        for(int i = P.variables.size()-1; i >= 0; i--){
                             stack.add(P.variables.get(i).value);
                         }
                         break;
@@ -219,6 +220,17 @@ public class Analyzer {
                 }
                 actualToken = lexer.nextToken();
             }
+        }
+
+        while(!stack.empty()){ //Vacia la pila de todas la No terminales que no se pueden eliminar
+            String variable = stack.pop();
+            if(rules.containsKey(variable)){
+                boolean flag = false;
+                for(ProductionRule P : rules.get(variable)){
+                    if(!P.variables.get(0).value.equals(RuleVariable.EPSILON.value)) flag = true;
+                }
+                if(!flag) break;
+            }else break;
         }
         System.out.println("finish");
 
@@ -255,15 +267,19 @@ public class Analyzer {
         }
     }
 
+    public void prediction(ProductionRule P){
+        HashSet<String> aux = new HashSet<>();
+        Primeros(aux, P.variables);
+        if(aux.contains(RuleVariable.EPSILON.value)){
+            aux.remove(RuleVariable.EPSILON.value);
+            P.getPrediction().addAll(aux);
+            P.getPrediction().addAll(next.get(P.head));
+        }else {
+            P.getPrediction().addAll(aux);
+        }
+    }
+
     public static void main(String[] args) throws IOException{
         Analyzer a = new Analyzer("Input/grammar.txt");
     }
 }
-
-/*
-* Primeros de S no va dos
-* Siguientes de B va $
-* Siguientes de C va uno
-* Siguientes de D va fin de cadena y dos
-*
-* */
