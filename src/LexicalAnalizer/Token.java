@@ -2,14 +2,14 @@ package LexicalAnalizer;
 
 public class Token {
 
-    public static final String EOF = "EOF";
+    public static final String EOF = "§";
     public static final String Numeric = "tk_num";
-    public static final String Identifier = "tk_identificador";
-    public static final String String = "tk_texto";
+    public static final String Identifier = "tk_id";
+    public static final String String = "tk_cadena";
 
 
-    protected String tokenType, lexeme;
-    protected int row, column;
+    public String tokenType, lexeme;
+    public int row, column;
     protected boolean reservedWord;
 
     public Token(String tokenType, String lexeme, int row, int column, boolean reservedWord){
