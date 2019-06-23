@@ -74,8 +74,13 @@ LINE_COMMENT:   '//' ~[\r\n]*   -> skip ;
 WS:             [ \t\r\n]+      -> skip ;
 
 ID: [a-zA-Z_][a-zA-Z0-9_]*;
-NUM: [0-9]+; //TODO:
-STR: '"' .*? '"'; //TODO:
+
+NUM: [0-9]+(REAL | CTF)?;
+REAL: '.'[0-9]+(CTF)?;
+CTF: ('e' | 'E')('+' | '-')[0-9]+;
+
+STR: '"' .*? '"' | '\'' .*? '\'';
+
 LOG: 'SI' | 'TRUE' | 'NO' | 'FALSE';
 
 OP_COMP: '<' | '<=' | '==' | '<>' | '>=' | '>';
