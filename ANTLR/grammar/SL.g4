@@ -19,8 +19,8 @@ variables: Tk_var (ID (Tk_coma ID)* Tk_dospuntos tipo_dato (Tk_asignacion dato)?
 subrutina: subrutina_base ( metodo | funcion );
 
 subrutina_base: Tk_subrutina ID Tk_par_izq parametros_subrutina? Tk_par_der;
-metodo: declaracion* Tk_inicio sentencia* Tk_fin;
-funcion: Tk_retorna ID declaracion* Tk_inicio sentencia* Tk_retorna Tk_par_izq ID Tk_par_der Tk_fin;
+metodo: declaracion* Tk_inicio sentencia+ Tk_fin;
+funcion: Tk_retorna (tipo_dato | ID) declaracion* Tk_inicio sentencia+ Tk_retorna Tk_par_izq dato Tk_par_der Tk_fin;
 parametros_subrutina: Tk_ref? ID Tk_dospuntos tipo_dato (Tk_coma Tk_ref? ID Tk_dospuntos tipo_dato)*;
 
 // Sentencias
@@ -34,16 +34,16 @@ asignacion: identificador Tk_asignacion dato;
 
 estructura_control: condicional | mientras | repetir_hasta | desde | eval;
 
-condicional: Tk_if Tk_par_izq logico Tk_par_der Tk_llave_izq sentencia* sino_si* sino? Tk_llave_der;
-sino_si: Tk_elseif Tk_if Tk_par_izq logico Tk_par_der sentencia*;
-sino: Tk_elseif sentencia*;
+condicional: Tk_if Tk_par_izq logico Tk_par_der Tk_llave_izq sentencia+ sino_si* sino? Tk_llave_der;
+sino_si: Tk_elseif Tk_if Tk_par_izq logico Tk_par_der sentencia+;
+sino: Tk_elseif sentencia+;
 
 
-mientras: Tk_mientras Tk_par_izq logico Tk_par_der Tk_llave_izq sentencia* Tk_llave_der;
+mientras: Tk_mientras Tk_par_izq logico Tk_par_der Tk_llave_izq sentencia+ Tk_llave_der;
 
-repetir_hasta: Tk_repetir sentencia* Tk_hasta Tk_par_izq logico Tk_par_der;
+repetir_hasta: Tk_repetir sentencia+ Tk_hasta Tk_par_izq logico Tk_par_der;
 
-desde: Tk_desde ID Tk_asignacion numerico Tk_hasta numerico (Tk_paso numerico)? Tk_llave_izq sentencia* Tk_llave_der;
+desde: Tk_desde ID Tk_asignacion numerico Tk_hasta numerico (Tk_paso numerico)? Tk_llave_izq sentencia+ Tk_llave_der;
 
 eval: Tk_eval Tk_llave_izq caso+ default? Tk_llave_der;
 caso: Tk_caso Tk_par_izq logico Tk_par_der sentencia+;
@@ -70,7 +70,7 @@ dim: (Tk_asterísco | numerico) (Tk_coma (Tk_asterísco | numerico))*;
 
 registro: Tk_registro Tk_llave_izq (declaracion_campo)+ Tk_llave_der;
 
-comparacion: numerico OP_COMP numerico;//TODO: Esto no deja comparar cadenas ni booleanos
+comparacion: numerico OP_COMP numerico | cadena OP_IDEN cadena | logico OP_IDEN logico;
 
 // Definicion de Tokens
 
@@ -78,7 +78,8 @@ COMMENT:        '/*' .*? '*/'   -> skip ;
 LINE_COMMENT:   '//' ~[\r\n]*   -> skip ;
 WS:             [ \t\r\n]+      -> skip ;
 
-OP_COMP: Tk_menor | Tk_menor_o_igual | Tk_igual_que | Tk_distinto_de | Tk_mayor_o_igual | Tk_mayor;
+OP_COMP: Tk_menor | Tk_menor_o_igual | Tk_mayor_o_igual | Tk_mayor | OP_IDEN;
+OP_IDEN: Tk_igual_que | Tk_distinto_de;
 OP_MAT : Tk_suma | Tk_resta | Tk_asterísco | Tk_división | Tk_módulo | Tk_potencia;
 
 Tk_logico: 'TRUE' | 'FALSE' | 'SI' | 'NO';
