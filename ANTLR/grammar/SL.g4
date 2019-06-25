@@ -1,70 +1,71 @@
 grammar SL;	
 
 // Inicio
-inicio: programa? declaracion* 'inicio' sentencia* 'fin' subrutina* EOF;
+inicio: programa? declaracion* Tk_inicio sentencia* Tk_fin subrutina* EOF;
 
-programa: 'programa' ID ';'?;
+programa: Tk_programa ID Tk_punto_y_coma?;
 
 // Declaraciones iniciales
 
-declaracion: (constantes | tipos | variables) ';'?;
+declaracion: (constantes | tipos | variables) Tk_punto_y_coma?;
 
-constantes: 'constantes' (identificador '=' dato ';'?)+; //TODO: Esto permite que haya 2 ';' seguidos...
-tipos: 'tipos' (declaracion_campo)+;
-declaracion_campo: ID ':' tipo_dato ';'?;
-variables: 'var' (ID (',' ID)* ':' tipo_dato ('=' dato)? ';'?)+; //TODO: No estoy seguro que sea igual a dato
+constantes: Tk_const (identificador Tk_asignacion dato Tk_punto_y_coma?)+;
+tipos: Tk_tipos (declaracion_campo)+;
+declaracion_campo: ID Tk_dospuntos tipo_dato Tk_punto_y_coma?;
+variables: Tk_var (ID (Tk_coma ID)* Tk_dospuntos tipo_dato (Tk_asignacion dato)? Tk_punto_y_coma?)+;
 
 // Subrutinas
 
 subrutina: subrutina_base ( metodo | funcion );
 
-subrutina_base: 'subrutina' ID '(' parametros_subrutina? ')';
-metodo: declaracion* 'inicio' sentencia* 'fin';
-funcion: 'retorna' ID declaracion* 'inicio' sentencia* 'retorna' '(' ID ')' 'fin'; //TODO: Revisar
-parametros_subrutina: 'ref'? ID ':' tipo_dato (',' 'ref'? ID ':' tipo_dato)*;
+subrutina_base: Tk_subrutina ID Tk_par_izq parametros_subrutina? Tk_par_der;
+metodo: declaracion* Tk_inicio sentencia* Tk_fin;
+funcion: Tk_retorna ID declaracion* Tk_inicio sentencia* Tk_retorna Tk_par_izq ID Tk_par_der Tk_fin;
+parametros_subrutina: Tk_ref? ID Tk_dospuntos tipo_dato (Tk_coma Tk_ref? ID Tk_dospuntos tipo_dato)*;
 
 // Sentencias
 
-sentencia: (llamadoFuncion | asignacion | estructura_control) ';'?;
+sentencia: (llamadoFuncion | asignacion | estructura_control) Tk_punto_y_coma?;
 
-llamadoFuncion: ID '(' parametros? ')';
-parametros: (identificador | dato | llamadoFuncion) (',' identificador | dato | llamadoFuncion)*;
+llamadoFuncion: ID Tk_par_izq parametros? Tk_par_der;
+parametros: dato (Tk_coma dato)*;
 
 operacion_matematica: (identificador | NUM) (OP_MAT numerico)* //TODO: deberia ser numerico (OP_MAT numerico)?
-            | '(' operacion_matematica ')';
+            | Tk_par_izq operacion_matematica Tk_par_der;
 
-asignacion: identificador '=' dato;
+test: OP_MAT;
+
+asignacion: identificador Tk_asignacion dato;
 
 estructura_control: condicional | mientras | repetir_hasta | desde | eval;
 
-condicional: 'si' '(' logico ')' '{' sentencia* '}';//TODO: revisar como va el else y elseif
+condicional: Tk_if Tk_par_izq logico Tk_par_der Tk_llave_izq sentencia* Tk_llave_der;//TODO: revisar como va el else y elseif
 
-mientras: 'mientras' '(' logico ')' '{' sentencia* '}';
+mientras: Tk_mientras Tk_par_izq logico Tk_par_der Tk_llave_izq sentencia* Tk_llave_der;
 
-repetir_hasta: 'repetir' sentencia* 'hasta' '(' logico ')';//TODO: revisar si no van llaves entre las sentencias
+repetir_hasta: Tk_repetir sentencia* Tk_hasta Tk_par_izq logico Tk_par_der;//TODO: revisar si no van llaves entre las sentencias
 
-desde: 'desde' ID '=' numerico 'hasta' numerico ('paso' numerico)? '{' sentencia* '}';
+desde: Tk_desde ID Tk_asignacion numerico Tk_hasta numerico (Tk_paso numerico)? Tk_llave_izq sentencia* Tk_llave_der;
 
-eval: 'eval' '{' caso+ default? '}';
-caso: 'caso' '(' logico ')' sentencia+;
-default: 'sino' sentencia+;
+eval: Tk_eval Tk_llave_izq caso+ default? Tk_llave_der;
+caso: Tk_caso Tk_par_izq logico Tk_par_der sentencia+;
+default: Tk_elseif sentencia+;
 
 // Definiciones extendidas
 
-tipo_dato: 'numerico' | 'cadena' | 'logico' | ID | estructura | registro;
+tipo_dato: Tk_numericoRW | Tk_cadenaRW | Tk_cadenaRW | ID | estructura | registro;
 
-dato: cadena | numerico | logico | estructura | registro;
+dato: cadena | numerico | logico | estructura | registro | llamadoFuncion | identificador;
 
-identificador: ID ('.' identificador | '[' numerico ']')*;
-numerico: identificador | ('+' | '-')? NUM | operacion_matematica | llamadoFuncion;
-cadena: STR | llamadoFuncion | identificador | cadena '+' cadena;
-logico: (LOG | ID | 'not' logico | llamadoFuncion | comparacion) (('and' | 'or') logico)* 
-    | '(' logico ')';
+identificador: ID (Tk_punto identificador | Tk_corchete_izq numerico Tk_corchete_der)*;
+numerico: (Tk_suma | Tk_resta)? NUM | identificador | llamadoFuncion;
+cadena: STR | identificador | llamadoFuncion | cadena Tk_suma cadena;
+logico: Tk_logico | identificador | llamadoFuncion | Tk_negación logico | logico (Tk_conjunción | Tk_disyunción) logico | Tk_par_izq logico Tk_par_der;
 
-estructura: ('vector' | 'matriz') '[' dim ']' tipo_dato;
-dim: ('*' | numerico) (',' ('*' | numerico))*;//TODO: desde aca se puede forzar el orden de *
+estructura: (Tk_vector | Tk_matriz) Tk_corchete_izq dim Tk_corchete_der tipo_dato;
+dim: (Tk_asterísco | numerico) (Tk_coma (Tk_asterísco | numerico))*;
 
-registro: 'registro' '{' (declaracion_campo)+ '}';
+registro: Tk_registro Tk_llave_izq (declaracion_campo)+ Tk_llave_der;
 
 comparacion: numerico OP_COMP numerico;//TODO: Esto no deja comparar cadenas ni booleanos
 
@@ -74,6 +75,58 @@ COMMENT:        '/*' .*? '*/'   -> skip ;
 LINE_COMMENT:   '//' ~[\r\n]*   -> skip ;
 WS:             [ \t\r\n]+      -> skip ;
 
+Tk_logico: 'TRUE' | 'FALSE' | 'SI' | 'NO';
+Tk_if: 'si';
+Tk_elseif: 'sino';
+Tk_conjunción: 'and';
+Tk_disyunción: 'or';
+Tk_negación: 'not';
+Tk_matriz: 'matriz';
+Tk_vector: 'vector';
+Tk_suma: '+';
+Tk_resta: '-';
+Tk_asterísco: '*';
+Tk_división: '/';
+Tk_módulo: '%';
+Tk_potencia: '^';
+Tk_asignacion: '=';
+Tk_menor: '<';
+Tk_mayor: '>';
+Tk_menor_o_igual: '<=';
+Tk_mayor_o_igual: '>=';
+Tk_igual_que: '==';
+Tk_distinto_de: '<>';
+Tk_punto: '.';
+Tk_coma: ',';
+Tk_punto_y_coma: ';';
+Tk_dospuntos: ':';
+Tk_par_izq: '(';
+Tk_par_der: ')';
+Tk_llave_izq: '{';
+Tk_llave_der: '}';
+Tk_corchete_izq: '[';
+Tk_corchete_der: ']';
+Tk_var: 'var' | 'variables';
+Tk_const: 'const' | 'constantes';
+Tk_tipos: 'tipos';
+Tk_registro: 'registro';
+Tk_cadenaRW: 'cadena';
+Tk_logicoRW: 'logico';
+Tk_numericoRW: 'numerico';
+Tk_caso: 'caso';
+Tk_eval: 'eval';
+Tk_desde: 'desde';
+Tk_hasta: 'hasta';
+Tk_paso: 'paso';
+Tk_mientras: 'mientras';
+Tk_repetir: 'repetir';
+Tk_inicio: 'inicio';
+Tk_fin: 'fin';
+Tk_subrutina: 'subrutina';
+Tk_retorna: 'retorna';
+Tk_ref: 'ref';
+Tk_programa: 'programa';
+
 ID: [a-zA-ZñÑ_][a-zA-Z0-9ñÑ_]*;
 
 NUM: [0-9]+(REAL | CTF)?;
@@ -82,7 +135,5 @@ CTF: ('e' | 'E')('+' | '-')[0-9]+;
 
 STR: '"' .*? '"' | '\'' .*? '\'';
 
-LOG: 'SI' | 'TRUE' | 'NO' | 'FALSE';
-
-OP_COMP: '<' | '<=' | '==' | '<>' | '>=' | '>';
-OP_MAT : '+' | '-' | '*' | '/' | '%' | '^';
+OP_COMP: Tk_menor | Tk_menor_o_igual | Tk_igual_que | Tk_distinto_de | Tk_mayor_o_igual | Tk_mayor;
+OP_MAT : Tk_suma | Tk_resta | Tk_asterísco | Tk_división | Tk_módulo | Tk_potencia;
