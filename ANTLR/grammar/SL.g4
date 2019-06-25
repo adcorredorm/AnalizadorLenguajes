@@ -3,16 +3,16 @@ grammar SL;
 // Inicio
 inicio: programa? declaracion* Tk_inicio sentencia* Tk_fin subrutina* EOF;
 
-programa: Tk_programa ID Tk_punto_y_coma?;
+programa: Tk_programa ID Tk_pyc?;
 
 // Declaraciones iniciales
 
-declaracion: (constantes | tipos | variables) Tk_punto_y_coma?;
+declaracion: (constantes | tipos | variables) Tk_pyc?;
 
-constantes: Tk_const (identificador Tk_asignacion dato Tk_punto_y_coma?)+;
+constantes: Tk_const (identificador Tk_asignacion dato Tk_pyc?)+;
 tipos: Tk_tipos (declaracion_campo)+;
-declaracion_campo: ID Tk_dospuntos tipo_dato Tk_punto_y_coma?;
-variables: Tk_var (ID (Tk_coma ID)* Tk_dospuntos tipo_dato (Tk_asignacion dato)? Tk_punto_y_coma?)+;
+declaracion_campo: ID Tk_dospuntos tipo_dato Tk_pyc?;
+variables: Tk_var (ID (Tk_coma ID)* Tk_dospuntos tipo_dato (Tk_asignacion dato)? Tk_pyc?)+;
 
 // Subrutinas
 
@@ -25,25 +25,23 @@ parametros_subrutina: Tk_ref? ID Tk_dospuntos tipo_dato (Tk_coma Tk_ref? ID Tk_d
 
 // Sentencias
 
-sentencia: (llamadoFuncion | asignacion | estructura_control) Tk_punto_y_coma?;
+sentencia: (llamadoFuncion | asignacion | estructura_control) Tk_pyc?;
 
 llamadoFuncion: ID Tk_par_izq parametros? Tk_par_der;
 parametros: dato (Tk_coma dato)*;
-
-operacion_matematica: (identificador | NUM) (OP_MAT numerico)* //TODO: deberia ser numerico (OP_MAT numerico)?
-            | Tk_par_izq operacion_matematica Tk_par_der;
-
-test: OP_MAT;
 
 asignacion: identificador Tk_asignacion dato;
 
 estructura_control: condicional | mientras | repetir_hasta | desde | eval;
 
-condicional: Tk_if Tk_par_izq logico Tk_par_der Tk_llave_izq sentencia* Tk_llave_der;//TODO: revisar como va el else y elseif
+condicional: Tk_if Tk_par_izq logico Tk_par_der Tk_llave_izq sentencia* sino_si* sino? Tk_llave_der;
+sino_si: Tk_elseif Tk_if Tk_par_izq logico Tk_par_der sentencia*;
+sino: Tk_elseif sentencia*;
+
 
 mientras: Tk_mientras Tk_par_izq logico Tk_par_der Tk_llave_izq sentencia* Tk_llave_der;
 
-repetir_hasta: Tk_repetir sentencia* Tk_hasta Tk_par_izq logico Tk_par_der;//TODO: revisar si no van llaves entre las sentencias
+repetir_hasta: Tk_repetir sentencia* Tk_hasta Tk_par_izq logico Tk_par_der;
 
 desde: Tk_desde ID Tk_asignacion numerico Tk_hasta numerico (Tk_paso numerico)? Tk_llave_izq sentencia* Tk_llave_der;
 
@@ -58,9 +56,14 @@ tipo_dato: Tk_numericoRW | Tk_cadenaRW | Tk_cadenaRW | ID | estructura | registr
 dato: cadena | numerico | logico | estructura | registro | llamadoFuncion | identificador;
 
 identificador: ID (Tk_punto identificador | Tk_corchete_izq numerico Tk_corchete_der)*;
-numerico: (Tk_suma | Tk_resta)? NUM | identificador | llamadoFuncion;
+
+numerico: (Tk_suma | Tk_resta)? NUM | identificador | llamadoFuncion
+        |numerico OP_MAT numerico | Tk_par_izq numerico Tk_par_der;
+
 cadena: STR | identificador | llamadoFuncion | cadena Tk_suma cadena;
-logico: Tk_logico | identificador | llamadoFuncion | Tk_negación logico | logico (Tk_conjunción | Tk_disyunción) logico | Tk_par_izq logico Tk_par_der;
+
+logico: Tk_logico | identificador | llamadoFuncion | Tk_negación logico
+        | logico (Tk_conjunción | Tk_disyunción) logico | Tk_par_izq logico Tk_par_der;
 
 estructura: (Tk_vector | Tk_matriz) Tk_corchete_izq dim Tk_corchete_der tipo_dato;
 dim: (Tk_asterísco | numerico) (Tk_coma (Tk_asterísco | numerico))*;
@@ -74,6 +77,9 @@ comparacion: numerico OP_COMP numerico;//TODO: Esto no deja comparar cadenas ni 
 COMMENT:        '/*' .*? '*/'   -> skip ;
 LINE_COMMENT:   '//' ~[\r\n]*   -> skip ;
 WS:             [ \t\r\n]+      -> skip ;
+
+OP_COMP: Tk_menor | Tk_menor_o_igual | Tk_igual_que | Tk_distinto_de | Tk_mayor_o_igual | Tk_mayor;
+OP_MAT : Tk_suma | Tk_resta | Tk_asterísco | Tk_división | Tk_módulo | Tk_potencia;
 
 Tk_logico: 'TRUE' | 'FALSE' | 'SI' | 'NO';
 Tk_if: 'si';
@@ -98,7 +104,7 @@ Tk_igual_que: '==';
 Tk_distinto_de: '<>';
 Tk_punto: '.';
 Tk_coma: ',';
-Tk_punto_y_coma: ';';
+Tk_pyc: ';';
 Tk_dospuntos: ':';
 Tk_par_izq: '(';
 Tk_par_der: ')';
@@ -134,6 +140,3 @@ REAL: '.'[0-9]+(CTF)?;
 CTF: ('e' | 'E')('+' | '-')[0-9]+;
 
 STR: '"' .*? '"' | '\'' .*? '\'';
-
-OP_COMP: Tk_menor | Tk_menor_o_igual | Tk_igual_que | Tk_distinto_de | Tk_mayor_o_igual | Tk_mayor;
-OP_MAT : Tk_suma | Tk_resta | Tk_asterísco | Tk_división | Tk_módulo | Tk_potencia;
