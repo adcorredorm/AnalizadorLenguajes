@@ -77,13 +77,13 @@ desde: Tk_desde ID Tk_asignacion numerico Tk_hasta numerico (Tk_paso numerico)?
 
 eval: Tk_eval Tk_llave_izq
         caso+
-        default?
+        caso_default?
       Tk_llave_der;
 
 caso: Tk_caso Tk_par_izq logico Tk_par_der
         sentencia+;
 
-default: Tk_elseif
+caso_default: Tk_elseif
         sentencia+;
 
 // Definiciones extendidas
