@@ -62,7 +62,8 @@ numerico: (Tk_suma | Tk_resta)? NUM | identificador | llamadoFuncion
 
 cadena: STR | identificador | llamadoFuncion | cadena Tk_suma cadena;
 
-logico: Tk_logico | identificador | llamadoFuncion | Tk_negación logico
+logico: Tk_logico | identificador | llamadoFuncion
+        | comparacion | Tk_negación logico
         | logico (Tk_conjunción | Tk_disyunción) logico | Tk_par_izq logico Tk_par_der;
 
 estructura: (Tk_vector | Tk_matriz) Tk_corchete_izq dim Tk_corchete_der tipo_dato;
@@ -70,7 +71,7 @@ dim: (Tk_asterísco | numerico) (Tk_coma (Tk_asterísco | numerico))*;
 
 registro: Tk_registro Tk_llave_izq (declaracion_campo)+ Tk_llave_der;
 
-comparacion: numerico OP_COMP numerico | cadena OP_IDEN cadena | logico OP_IDEN logico;
+comparacion: numerico OP_COMP numerico | cadena OP_IDEN cadena;
 
 // Definicion de Tokens
 
