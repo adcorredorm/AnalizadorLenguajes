@@ -1,7 +1,7 @@
 grammar SL;	
 
 // Inicio
-inicio: programa? declaracion* 'inicio' sentencia* 'fin' subrutina*;
+inicio: programa? declaracion* 'inicio' sentencia* 'fin' subrutina* EOF;
 
 programa: 'programa' ID ';'?;
 
@@ -9,10 +9,10 @@ programa: 'programa' ID ';'?;
 
 declaracion: (constantes | tipos | variables) ';'?;
 
-constantes: 'constantes' (identificador '=' tipo_dato ';'?)+; //TODO: Esto permite que haya 2 ';' seguidos...
+constantes: 'constantes' (identificador '=' dato ';'?)+; //TODO: Esto permite que haya 2 ';' seguidos...
 tipos: 'tipos' (declaracion_campo)+;
 declaracion_campo: ID ':' tipo_dato ';'?;
-variables: 'var' (ID (',' ID)* ':' tipo_dato '=' dato ';'?)+; //TODO: No estoy seguro que sea igual a dato
+variables: 'var' (ID (',' ID)* ':' tipo_dato ('=' dato)? ';'?)+; //TODO: No estoy seguro que sea igual a dato
 
 // Subrutinas
 
@@ -45,18 +45,19 @@ repetir_hasta: 'repetir' sentencia* 'hasta' '(' logico ')';//TODO: revisar si no
 
 desde: 'desde' ID '=' numerico 'hasta' numerico ('paso' numerico)? '{' sentencia* '}';
 
-eval: 'eval' '{' caso+ '}';//TODO: revisar el dafault
-caso: 'caso' '(' logico ')' sentencia*;
+eval: 'eval' '{' caso+ default? '}';
+caso: 'caso' '(' logico ')' sentencia+;
+default: 'sino' sentencia+;
 
 // Definiciones extendidas
 
-tipo_dato: ID | estructura | registro | 'numerico' | 'cadena' | 'logico';
+tipo_dato: 'numerico' | 'cadena' | 'logico' | ID | estructura | registro;
 
 dato: cadena | numerico | logico | estructura | registro;
 
 identificador: ID ('.' identificador | '[' numerico ']')*;
 numerico: identificador | ('+' | '-')? NUM | operacion_matematica | llamadoFuncion;
-cadena: STR ('+' STR)* | llamadoFuncion;
+cadena: STR | llamadoFuncion | identificador | cadena '+' cadena;
 logico: (LOG | ID | 'not' logico | llamadoFuncion | comparacion) (('and' | 'or') logico)* 
     | '(' logico ')';
 
@@ -73,7 +74,7 @@ COMMENT:        '/*' .*? '*/'   -> skip ;
 LINE_COMMENT:   '//' ~[\r\n]*   -> skip ;
 WS:             [ \t\r\n]+      -> skip ;
 
-ID: [a-zA-Z_][a-zA-Z0-9_]*;
+ID: [a-zA-ZñÑ_][a-zA-Z0-9ñÑ_]*;
 
 NUM: [0-9]+(REAL | CTF)?;
 REAL: '.'[0-9]+(CTF)?;
