@@ -1,4 +1,4 @@
-grammar SL;	
+grammar SL;
 
 // Inicio
 inicio: programa? declaracion* Tk_inicio sentencia* Tk_fin subrutina* EOF;
@@ -100,11 +100,11 @@ numerico: (Tk_suma | Tk_resta)? NUM | identificador | llamadoFuncion
 cadena: STR | identificador | llamadoFuncion | cadena Tk_suma cadena;
 
 logico: Tk_logico | identificador | llamadoFuncion
-        | comparacion | Tk_negación logico
-        | logico (Tk_conjunción | Tk_disyunción) logico | Tk_par_izq logico Tk_par_der;
+        | comparacion | Tk_negacion logico
+        | logico (Tk_conjuncion | Tk_disyuncion) logico | Tk_par_izq logico Tk_par_der;
 
 estructura: (Tk_vector | Tk_matriz) Tk_corchete_izq dim Tk_corchete_der tipo_dato;
-dim: (Tk_asterísco | numerico) (Tk_coma (Tk_asterísco | numerico))*;
+dim: (Tk_asterisco | numerico) (Tk_coma (Tk_asterisco | numerico))*;
 
 registro: Tk_registro Tk_llave_izq (declaracion_campo)+ Tk_llave_der;
 
@@ -125,21 +125,21 @@ STR: '"' .*? '"' | '\'' .*? '\'';
 OP_COMP: Tk_menor | Tk_menor_o_igual | Tk_mayor_o_igual | Tk_mayor | OP_IDEN;
 OP_IDEN: Tk_igual_que | Tk_distinto_de;
 
-OP_MAT : Tk_suma | Tk_resta | Tk_asterísco | Tk_división | Tk_módulo | Tk_potencia;
+OP_MAT : Tk_suma | Tk_resta | Tk_asterisco | Tk_division | Tk_modulo | Tk_potencia;
 
 Tk_logico: 'TRUE' | 'FALSE' | 'SI' | 'NO';
 Tk_if: 'si';
 Tk_elseif: 'sino';
-Tk_conjunción: 'and';
-Tk_disyunción: 'or';
-Tk_negación: 'not';
+Tk_conjuncion: 'and';
+Tk_disyuncion: 'or';
+Tk_negacion: 'not';
 Tk_matriz: 'matriz';
 Tk_vector: 'vector';
 Tk_suma: '+';
 Tk_resta: '-';
-Tk_asterísco: '*';
-Tk_división: '/';
-Tk_módulo: '%';
+Tk_asterisco: '*';
+Tk_division: '/';
+Tk_modulo: '%';
 Tk_potencia: '^';
 Tk_asignacion: '=';
 Tk_menor: '<';
