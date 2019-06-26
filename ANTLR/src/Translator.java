@@ -73,7 +73,7 @@ public class Translator extends SLBaseListener{
     public void enterDeclaracion_constante(SLParser.Declaracion_constanteContext ctx){
         try {
             System.out.println("Pasó por aquí");
-            file.write("final " + tipo(ctx.dato()) + " " + ctx.identificador().getText() + " " + ctx.Tk_asignacion().getText() + " " + ctx.dato().getText()+" ;");
+            file.write("final " + tipo(ctx.dato()) + " " + ctx.identificador().getText() + " " + ctx.Tk_asignacion().getText() + " " + ctx.dato().getText()+" ;\n");
             file.flush();
         } catch (Exception e){
             System.out.println(e);
