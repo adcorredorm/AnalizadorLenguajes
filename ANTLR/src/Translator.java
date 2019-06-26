@@ -7,6 +7,19 @@ public class Translator extends SLBaseListener{
     protected BufferedWriter file;
     protected String class_name;
 
+
+    private String tipo(SLParser.DatoContext dato){
+        if( dato.cadena()!= null )
+            return "String";
+        if( dato.numerico()!= null )
+            return "double";
+        if( dato.logico()!= null )
+            return "boolean";
+        else
+            return dato.estructura().getText();
+
+    }
+
     @Override
     public void enterInicio(SLParser.InicioContext ctx){
         System.out.println("Inicia el analisis");
@@ -58,7 +71,13 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion_constante(SLParser.Declaracion_constanteContext ctx){
-
+        try {
+            System.out.println("Pasó por aquí");
+            file.write("final " + tipo(ctx.dato()) + " " + ctx.identificador().getText() + " " + ctx.Tk_asignacion().getText() + " " + ctx.dato().getText()+" ;");
+            file.flush();
+        } catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     @Override
