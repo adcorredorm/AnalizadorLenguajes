@@ -34,19 +34,33 @@ public class Translator extends SLBaseListener{
     private String getTipo(SLParser.DatoContext dato){
         if( dato.cadena() != null )
             return "String";
-        if( dato.numerico() != null )
+        else if( dato.numerico() != null )
             return "double";
-        if( dato.logico() != null )
+        else if( dato.logico() != null )
             return "boolean";
         else
             return dato.identificador().getText();
     }
 
+    private String getTipo(String tipoDato){
+        if( tipoDato.equals("cadena") )
+            return "String";
+        else if( tipoDato.equals("numerico") )
+            return "double";
+        else if (tipoDato.startsWith("matriz") || tipoDato.startsWith("vector"))
+            return getTipo(tipoDato.split("]")[1]);
+        else
+            return "boolean";
+    }
+
     private String getTipo(SLParser.Tipo_datoContext tipoDato){
+
         if( tipoDato.getText().equals("cadena") )
             return "String";
-        if( tipoDato.getText().equals("numerico") )
+        else if( tipoDato.getText().equals("numerico") )
             return "double";
+        else if (tipoDato.getText().startsWith("matriz") || tipoDato.getText().startsWith("vector"))
+            return getTipo(tipoDato.getText().split("]")[1]);
         else
             return "boolean";
     }
@@ -166,9 +180,23 @@ public class Translator extends SLBaseListener{
     @Override
     public void enterDeclaracion_variable(SLParser.Declaracion_variableContext ctx){
         if(ctx.dato() != null){
-            write(getTipo(ctx.tipo_dato()) + " " + ctx.ID().toString().substring(1,ctx.ID().toString().length()-1) + " = " + ctx.dato().getText() + ";\n");
-        }else {
-            write(getTipo(ctx.tipo_dato()) + " " + ctx.ID().toString().substring(1,ctx.ID().toString().length()-1) + ";\n");
+            if(ctx.tipo_dato().estructura() != null){
+                write(getTipo(ctx.tipo_dato()) + "[] " + ctx.ID().toString().substring(1,ctx.ID().toString().length()-1) + ";\n");
+            }else {
+                write(getTipo(ctx.tipo_dato()) + " " +
+                        ctx.ID().toString().substring(1, ctx.ID().toString().length() - 1) + " = " +
+                        ctx.dato().getText() + ";\n");
+            }
+            }else {
+            if(ctx.tipo_dato().estructura() != null){
+                write(getTipo(ctx.tipo_dato()) + "[] " + ctx.ID().toString().substring(1,ctx.ID().toString().length()-1));
+                write2(" = new " + getTipo(ctx.tipo_dato()));
+            }else {
+                write(getTipo(ctx.tipo_dato()) + " " +
+                        ctx.ID().toString().substring(1, ctx.ID().toString().length() - 1) + " = " +
+                        ctx.dato().getText() + "" + ";\n"
+                );
+            }
         }
     }
 
@@ -559,7 +587,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDim(SLParser.DimContext ctx){
-
+        write2("[" + ctx.numerico().get(0).getText() + "];\n");
     }
 
     @Override

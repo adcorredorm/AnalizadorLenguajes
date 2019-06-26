@@ -1,9 +1,6 @@
 var
-  M3 : matriz [3, 5, 2] numerico // matriz 3D
-  v : vector [6] numerico
-  M : matriz [5, 7] numerico
-  dias_sem : vector [7] cadena
-
+  tot : numerico
+  n : numerico
 inicio
   cls()
   imprimir_explicacion()
@@ -48,7 +45,7 @@ inicio
   retorna ( ent )
 fin
 
-subrutina mi_sub (a : numerico, ref b : numerico)
+subrutina mi_sub (a : numerico; ref b : numerico)
 /*
   a se recibe por valor, pero b por referencia.
 */
@@ -58,7 +55,7 @@ inicio
   imprimir ( "\n", a, " ", b)
 fin
 
-subrutina impr_vect (v : vector [5] numerico)
+subrutina impr_vect (v : vector [*] numerico)
 var
   k : numerico
 inicio
