@@ -155,14 +155,18 @@ public class Main{
 		inicializar_scanner();
 		inicializar_tabs();
 		inicializar_codigo();
-		if(pudo_abrirse_fuente()){		pudo_abrirse_fuente();		sgte_lex();
-		analizar_fuente();
-		if(cant_error==0){		==		if(mostrar_inst){		imprimir_codigo();
-		}else{		inicializar_interprete();
-		set_stdin("");
-		ejecutar();
-		}
-		}
+		if(pudo_abrirse_fuente()){
+			pudo_abrirse_fuente();			sgte_lex();
+			analizar_fuente();
+			if(cant_error==0){
+				==				if(mostrar_inst){
+					imprimir_codigo();
+				}else{
+					inicializar_interprete();
+					set_stdin("");
+					ejecutar();
+				}
+			}
 		}
 	}
 
@@ -201,12 +205,14 @@ public class Main{
 	}
 
 	public static void leer_sgte_linea(){
-		if(noteof()){		eof();		leer(lt);
-		llt = strlen(lt);
-		strlen(lt);
-		up = 0;
+		if(noteof()){
+			eof();			leer(lt);
+			llt = strlen(lt);
+			strlen(lt);
+			up = 0;
 
-		}else{		llt = -1;
+		}else{
+			llt = -1;
 
 		}
 	}
@@ -236,9 +242,11 @@ public class Main{
 		dec(up);
 		subcad = substr(lt,pos_i,(up-pos_i)+1);
 		substr(lt,pos_i,(up-pos_i)+1);
-		if(es_palabra_reserv(subcad,ipr)){		es_palabra_reserv(subcad,ipr);		tk = ipr.lex;
+		if(es_palabra_reserv(subcad,ipr)){
+			es_palabra_reserv(subcad,ipr);			tk = ipr.lex;
 
-		}else{		tk = S_NOMBRE_VAR;
+		}else{
+			tk = S_NOMBRE_VAR;
 
 		}
 	}
@@ -265,19 +273,23 @@ public class Main{
 
 		num_cad = leer_constante_entera();
 		leer_constante_entera();
-		if(substr(lt,up+1,1)=='.'){		==		substr(lt,up+1,1);		inc(up,2);
-		if(es_digito(substr(lt,up,1))){		es_digito(substr(lt,up,1));		substr(lt,up,1);		num_cad = ;
+		if(substr(lt,up+1,1)=='.'){
+			==			substr(lt,up+1,1);			inc(up,2);
+			if(es_digito(substr(lt,up,1))){
+				es_digito(substr(lt,up,1));				substr(lt,up,1);				num_cad = ;
 
 
 
-		leer_constante_entera();
-		}else{		tk = S_ERROR;
+				leer_constante_entera();
+			}else{
+				tk = S_ERROR;
 
-		}
+			}
 		}
 		val_num = val(num_cad);
 		val(num_cad);
-		if(tk==S_NADA){		==		tk = S_CONST_NUM;
+		if(tk==S_NADA){
+			==			tk = S_CONST_NUM;
 
 		}
 	}
@@ -289,15 +301,20 @@ public class Main{
 
 		subcad = "";
 
-		while(tk==S_NADA){		==		if(up>=llt){		>=		leer_sgte_linea();
-		if(llt==-1){		==		tk = S_EOF;
+		while(tk==S_NADA){
+		==		if(up>=llt){
+			>=			leer_sgte_linea();
+			if(llt==-1){
+				==				tk = S_EOF;
 
+			}
 		}
-		}
-		if(tk<>S_EOF){		<>		inc(up);
-		c = substr(lt,up,1);
-		substr(lt,up,1);
-if(c==''){		==}
+		if(tk<>S_EOF){
+			<>			inc(up);
+			c = substr(lt,up,1);
+			substr(lt,up,1);
+			if(c==''){
+				==}
 
 
 		}
@@ -316,89 +333,99 @@ if(c==''){		==}
 
 
 
-		if(lt[up+1]=='-'){		==		up = llt+1;
+		if(lt[up+1]=='-'){
+			==			up = llt+1;
 
-		}else{		tk = S_MENOS;
-
-		}
-
-
-		tk = ;
-
-
-
-
-
-		tk = ;
-
-
-
-
-
-		tk = ;
-
-
-
-
-
-		tk = ;
-
-
-
-
-
-		tk = ;
-
-
-
-
-
-		tk = ;
-
-
-
-
-
-		tk = ;
-
-
-
-
-
-		tk = ;
-
-
-
-
-
-		if(lt[up+1]=='='){		==		tk = S_MENOR_IGUAL;
-
-		inc(up);
-		}else{		tk = S_MENOR;
+		}else{
+			tk = S_MENOS;
 
 		}
 
 
-		if(lt[up+1]=='='){		==		tk = S_MAYOR_IGUAL;
+		tk = ;
 
-		inc(up);
-		}else{		tk = S_MAYOR;
+
+
+
+
+		tk = ;
+
+
+
+
+
+		tk = ;
+
+
+
+
+
+		tk = ;
+
+
+
+
+
+		tk = ;
+
+
+
+
+
+		tk = ;
+
+
+
+
+
+		tk = ;
+
+
+
+
+
+		tk = ;
+
+
+
+
+
+		if(lt[up+1]=='='){
+			==			tk = S_MENOR_IGUAL;
+
+			inc(up);
+		}else{
+			tk = S_MENOR;
 
 		}
 
 
-		if(lt[up+1]=='='){		==		tk = S_IGUAL;
+		if(lt[up+1]=='='){
+			==			tk = S_MAYOR_IGUAL;
 
-		inc(up);
-		}else{		tk = S_ASIGNACION;
+			inc(up);
+		}else{
+			tk = S_MAYOR;
 
 		}
 
 
-		if(lt[up+1]=='='){		==		tk = S_DISTINTO;
+		if(lt[up+1]=='='){
+			==			tk = S_IGUAL;
 
-		inc(up);
-		}else{		tk = S_ERROR;
+			inc(up);
+		}else{
+			tk = S_ASIGNACION;
+
+		}
+
+
+		if(lt[up+1]=='='){
+			==			tk = S_DISTINTO;
+
+			inc(up);
+		}else{
+			tk = S_ERROR;
 
 		}
 		tk = S_ERROR;

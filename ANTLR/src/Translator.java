@@ -294,17 +294,20 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterCondicional(SLParser.CondicionalContext ctx){
-        write("if(" + ctx.logico().getText() + "){");
+        write("if(" + ctx.logico().getText() + "){\n");
+        nested++;
     }
 
     @Override
     public void exitCondicional(SLParser.CondicionalContext ctx){
+        nested--;
         write("}");
     }
 
     @Override
     public void enterSino_si(SLParser.Sino_siContext ctx){
-        write("}else if(" + ctx.logico().getText() + "){");
+        write("}else if(" + ctx.logico().getText() + "){\n");
+        nested++;
     }
 
     @Override
@@ -314,7 +317,9 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterSino(SLParser.SinoContext ctx){
-        write("}else{");
+        nested--;
+        write("}else{\n");
+        nested++;
     }
 
     @Override
@@ -324,7 +329,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterMientras(SLParser.MientrasContext ctx){
-        write("while(" + ctx.logico().getText() + "){");
+        write("while(" + ctx.logico().getText() + "){\n");
     }
 
     @Override
@@ -388,28 +393,30 @@ public class Translator extends SLBaseListener{
     @Override
     public void enterCaso(SLParser.CasoContext ctx){
         if(first == true){
-            write2("if(" + ctx.logico().getText() + "){");
+            write("if(" + ctx.logico().getText() + "){\n");
         }else{
-            write2("else if(" + ctx.logico().getText() + "){");
+            write("else if(" + ctx.logico().getText() + "){\n");
         }
+        nested++;
         first = false;
     }
 
     @Override
     public void exitCaso(SLParser.CasoContext ctx){
-
+        nested--;
         write2("}");
     }
 
     @Override
     public void enterCaso_default(SLParser.Caso_defaultContext ctx){
-        write2("else{");
+        write("else{\n");
+        nested++;
     }
 
     @Override
     public void exitCaso_default(SLParser.Caso_defaultContext ctx){
-        write2("}");
-
+        write("}");
+        nested--;
     }
 
     @Override
