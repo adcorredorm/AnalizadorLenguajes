@@ -16,6 +16,12 @@ public interface SLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitInicio(SLParser.InicioContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SLParser#main}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMain(SLParser.MainContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SLParser#programa}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
