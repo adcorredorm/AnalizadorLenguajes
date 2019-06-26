@@ -1,58 +1,15 @@
-// Comentario
-var
-    n, suma, k : numerico
-const
-    b = 9
-    c = 'asdasd'
-    v = TRUE
-
 inicio
-    imprimir ("Suma pares hasta n."," Ingrese n: ")
-    leer (n)
-    suma = 0.0
-    desde k=2 hasta n paso 2
-    {
-        suma = suma + k
-    }
-    imprimir ("La suma es ", suma)
 
-    si ( suma >= 95 )
-        {
-          suma = n5 + 1
-        sino si ( pnt >= 85 )
-          n3 = n3 + 1
-        sino si ( pnt < 60 )
-          n1 = n1 + 1
-         sino
-         m = m +3
-        }
-
-
-fin
-
-subrutina calcular_suma (entero_tope : numerico)
-/*
-  Ejemplo de subrutina que recibe un parametro.
-*/
-var
-  k : numerico
-  inicio
-  tot = 0
-  desde k = 1 hasta entero_tope
+eval
   {
-    tot = tot + k
+    caso ( let >= a and let <= b )
+      msg = asdf
+    caso ( let >= 123123 and let <= 12 )
+      msg = asdfasd
+    caso ( let >= 2 and let <= 142 )
+      msg = asdfadf
+    sino
+      msg = basdfadsf
   }
-fin
 
-subrutina entero (n : numerico) retorna numerico
-var
-  ent : numerico
-inicio
-  ent = 0
-  mientras ( n >= 1 )
-  {
-    ent = ent + 1
-    n = n - 1
-  }
-  retorna ( ent )
-fin
+  fin

@@ -13,6 +13,7 @@ public class Translator extends SLBaseListener{
     protected static void write(String s) {
         try {
             for (int i = 0; i < nested ; i++)
+
                 file.write("\t");
             file.write(s);
             file.flush();
@@ -24,6 +25,7 @@ public class Translator extends SLBaseListener{
     protected static void write2(String s) {
         try {
             file.write(s);
+
             file.flush();
         } catch (Exception e) {
             System.err.println(e);
@@ -133,7 +135,9 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion_campo(SLParser.Declaracion_campoContext ctx){
-
+        write("class " + ctx.ID() + "{");
+        write(getTipo(ctx.tipo_dato()) + " " + ctx.ID() + ";");
+        write("}");
     }
 
     @Override
@@ -153,7 +157,11 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion_variable(SLParser.Declaracion_variableContext ctx){
-
+        if(ctx.dato() != null){
+            write(getTipo(ctx.tipo_dato()) + " " + ctx.ID() + " = " + ctx.dato() + ";");
+        }else {
+            write(getTipo(ctx.tipo_dato()) + " " + ctx.ID() + ";");;
+        }
     }
 
     @Override
@@ -317,7 +325,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void exitMientras(SLParser.MientrasContext ctx){
-
+        write("}");
     }
 
     @Override
@@ -354,6 +362,9 @@ public class Translator extends SLBaseListener{
         write("}\n");
     }
 
+    //Eval
+    boolean first = true;
+
     @Override
     public void enterEval(SLParser.EvalContext ctx){
 
@@ -361,26 +372,33 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void exitEval(SLParser.EvalContext ctx){
-
+        first = true;
     }
 
     @Override
     public void enterCaso(SLParser.CasoContext ctx){
-
+        if(first == true){
+            write("if(" + ctx.logico().getText() + "){");
+        }else{
+            write("else if(" + ctx.logico().getText() + "){");
+        }
+        first = false;
     }
 
     @Override
     public void exitCaso(SLParser.CasoContext ctx){
 
+        write("}");
     }
 
     @Override
     public void enterCaso_default(SLParser.Caso_defaultContext ctx){
-
+        write("else{");
     }
 
     @Override
     public void exitCaso_default(SLParser.Caso_defaultContext ctx){
+        write("}");
 
     }
 
