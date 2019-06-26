@@ -6,14 +6,16 @@ public class Translator extends SLBaseListener{
 
     protected static BufferedWriter file;
     protected String class_name;
+    private StringBuilder builder;
 
-    protected static void write(String s){
-        try{
+    protected static void write(String s) {
+        try {
             file.write(s);
             file.flush();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println(e);
         }
+    }
 
     private String tipo(SLParser.DatoContext dato){
         if( dato.cadena()!= null )
@@ -280,34 +282,44 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterRepetir_hasta(SLParser.Repetir_hastaContext ctx){
-
+        write("do{\n");
     }
 
     @Override
     public void exitRepetir_hasta(SLParser.Repetir_hastaContext ctx){
+        builder = new StringBuilder();
 
+        builder.append("}while(");
+        builder.append(visitLogico(ctx.logico()));
+        builder.append(");\n");
+
+        write(builder.toString());
     }
 
     @Override
     public void enterDesde(SLParser.DesdeContext ctx){
         String var = ctx.ID().getText();
-        write("for(int " + var + "=");
-        write(ctx.numerico(0).getText());
-        write("; " + var + " < ");
-        write(ctx.numerico(1).getText());
-        write("; " + var);
+        builder = new StringBuilder();
+
+        builder.append("for(int " + var + "=");
+        builder.append(ctx.numerico(0).getText());
+        builder.append("; " + var + " < ");
+        builder.append(ctx.numerico(1).getText());
+        builder.append("; " + var);
         if(ctx.Tk_paso() != null){
-            write("+=");
-            write(ctx.numerico(2).getText());
+            builder.append("+=");
+            builder.append(ctx.numerico(2).getText());
         }else{
-            write("++");
+            builder.append("++");
         }
-        write("){\n");
+        builder.append("){\n");
+
+        write(builder.toString());
     }
 
     @Override
     public void exitDesde(SLParser.DesdeContext ctx){
-        write("\n}\n");
+        write("}\n");
     }
 
     @Override
@@ -393,6 +405,34 @@ public class Translator extends SLBaseListener{
     @Override
     public void enterLogico(SLParser.LogicoContext ctx){
 
+    }
+
+    private String visitLogico(SLParser.LogicoContext ctx){
+        builder = new StringBuilder();
+        if(ctx.Tk_logico() != null){
+            if(ctx.Tk_logico().getText().equals("TRUE") || ctx.Tk_logico().getText().equals("SI")){
+                builder.append("true");
+            }else{
+                builder.append("false");
+            }
+        }else if(ctx.Tk_negacion() != null){
+            builder.append("!");
+            builder.append(visitLogico(ctx.logico(0)));
+        }else if(ctx.Tk_conjuncion() != null){
+            builder.append(visitLogico(ctx.logico(0)));
+            builder.append("&&");
+            builder.append(visitLogico(ctx.logico(1)));
+        }else if(ctx.Tk_disyuncion() != null){
+            builder.append(visitLogico(ctx.logico(0)));
+            builder.append("||");
+            builder.append(visitLogico(ctx.logico(1)));
+        }else{
+            builder.append("(");
+            builder.append(visitLogico(ctx.logico(0)));
+            builder.append(")");
+        }
+
+        return builder.toString();
     }
 
     @Override
