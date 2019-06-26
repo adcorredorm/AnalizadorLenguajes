@@ -1,56 +1,48 @@
 public class Main{
 
-	double[] M3 = new double[3][5][2];
-	double[] v = new double[6];
-	double[] M = new double[5][7];
-	String[] dias_sem = new String[7];
+	double[] arr = new double[5];
+	double aux, aux2;
+	final double min = 0;	
+	final double max = 1;	
+	final String prom = "Ingrese el tamaño";	
+	
 	public static void main(String[] args){
-		cls();		
-		imprimir_explicacion();		
-		System.out.println("Numero entero? ");		
+		System.out.println(prom);		
 
 		// Import Scanner from java.io and initialize an instance 'sc' for the following inputs:
-		String n = sc.nextLine();
-		String m = sc.nextLine();
-		String asdf = sc.nextLine();
+		double size = Integer.parseInt(sc.nextLine());
 		
-		calcular_suma(n);		
-		System.out.println("\nLa suma de los primeros " + n  + "números enteros es "  + tot );		
-	}
+		for(int i = 0; i < size; i++){
 
-	public static void calcular_suma(double entero_tope){
-		double k;
-		tot = 0;		
-		for(int k = 1; k < entero_tope; k++){
-			tot = tot+k;			
+			// Import Scanner from java.io and initialize an instance 'sc' for the following inputs:
+			double aux = Integer.parseInt(sc.nextLine());
+			
+			arr[i] = aux;			
 		}		
-	}
+		System.out.println("Elija su opcion: 0 si es minimo y 1 si es maximo");		
 
-	public static void imprimir_explicacion(){
-		System.out.println("\nEste programa de ejemplo calcula la suma de los enteros" + "\npositivos comprendidos entre 1 y un valor "  + "que se ingresa\n" );		
-	}
-
-	public static double entero(double n){
-		double ent;
-		ent = 0;		
-		while(n>=1){
-			ent = ent+1;			
-			n = n-1;			
+		// Import Scanner from java.io and initialize an instance 'sc' for the following inputs:
+		double opcion = Integer.parseInt(sc.nextLine());
+		
+		if(opcion==min){
+			aux = 1;			
+			aux2 = arr[0];			
+			do{
+				if(aux2<arr[aux]){
+					aux2 = arr[aux];					
+				}				
+			}while(aux==size);
+			
+		}else{
+			aux = 1;			
+			aux2 = arr[0];			
+			while(aux<size){
+				if(aux2>arr[aux]){
+					aux2 = arr[aux];					
+				}				
+			}			
 		}		
-		return ent;
-	}
-
-	public static void mi_sub(double a, double b){
-		a = 5;		
-		b = b*5;		
-		System.out.println("\n" + a  + " "  + b );		
-	}
-
-	public static void impr_vect(double v){
-		double k;
-		for(int k = 1; k < alen(v); k++){
-			System.out.println(v[k] + j );			
-		}		
+		System.out.println(aux2);		
 	}
 
 }

@@ -310,7 +310,7 @@ public class Translator extends SLBaseListener{
             write2("\n");
             write("// Import Scanner from java.io and initialize an instance 'sc' for the following inputs:\n");
             for (int i = 0; i < splitter.length; i++) {
-                write("String " + splitter[i] + " = " + "sc.nextLine();\n");
+                write("double " + splitter[i] + " = " + "Integer.parseInt(sc.nextLine());\n");
             }
 
         }else {
@@ -371,6 +371,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterSino_si(SLParser.Sino_siContext ctx){
+        nested--;
         write("}else if(" + ctx.logico().getText() + "){\n");
         nested++;
     }
@@ -407,15 +408,16 @@ public class Translator extends SLBaseListener{
     @Override
     public void enterRepetir_hasta(SLParser.Repetir_hastaContext ctx){
         write("do{\n");
+        nested++;
     }
 
     @Override
     public void exitRepetir_hasta(SLParser.Repetir_hastaContext ctx){
         builder = new StringBuilder();
-
+        nested--;
         write("}while(");
         visitLogico(ctx.logico());
-        write(");\n");
+        write2(");\n");
 
     }
 
@@ -461,7 +463,7 @@ public class Translator extends SLBaseListener{
         if(first == true){
             write("if(" + ctx.logico().getText() + "){\n");
         }else{
-            write("else if(" + ctx.logico().getText() + "){\n");
+            write2("else if(" + ctx.logico().getText() + "){\n");
         }
         nested++;
         first = false;
@@ -475,14 +477,14 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterCaso_default(SLParser.Caso_defaultContext ctx){
-        write("else{\n");
+        write2("else{\n");
         nested++;
     }
 
     @Override
     public void exitCaso_default(SLParser.Caso_defaultContext ctx){
-        write("}");
         nested--;
+        write("}");
     }
 
     @Override
@@ -544,35 +546,35 @@ public class Translator extends SLBaseListener{
 
         if(ctx.Tk_logico() != null){
             if(ctx.Tk_logico().getText().equals("TRUE") || ctx.Tk_logico().getText().equals("SI")){
-                write("true");
+                write2("true");
             }else{
-                write("false");
+                write2("false");
             }
         }else if(ctx.Tk_negacion() != null){
-            write("!");
+            write2("!");
             visitLogico(ctx.logico(0));
         }else if(ctx.Tk_conjuncion() != null){
             visitLogico(ctx.logico(0));
-            write(" && ");
+            write2(" && ");
             visitLogico(ctx.logico(1));
         }else if(ctx.Tk_disyuncion() != null){
             visitLogico(ctx.logico(0));
-            write(" || ");
+            write2(" || ");
             visitLogico(ctx.logico(1));
         }else if(ctx.Tk_par_izq() != null){
-            write("(");
+            write2("(");
             visitLogico(ctx.logico(0));
-            write(")");
+            write2(")");
         }else if(ctx.llamadoFuncion_parametro() != null){
             visitLlamadoFuncion_parametro(ctx.llamadoFuncion_parametro());
         }else if(ctx.comparacion() != null){
             if(ctx.comparacion().numerico() != null){
-                write(ctx.comparacion().numerico().getText());
+                write2(ctx.comparacion().numerico().getText());
             }else{
-                write(ctx.comparacion().cadena().getText());
+                write2(ctx.comparacion().cadena().getText());
             }
-            write(ctx.comparacion().OP_COMP().getText());
-            write(ctx.comparacion().dato().getText());
+            write2(ctx.comparacion().OP_COMP().getText());
+            write2(ctx.comparacion().dato().getText());
         }
     }
 
