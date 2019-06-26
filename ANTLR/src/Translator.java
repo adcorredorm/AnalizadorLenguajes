@@ -141,7 +141,11 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion_variable(SLParser.Declaracion_variableContext ctx){
-
+        if(ctx.dato() != null){
+            write(getTipo(ctx.tipo_dato()) + " " + ctx.ID() + "=" + ctx.dato() + ";");
+        }else {
+            write(getTipo(ctx.tipo_dato()) + " " + ctx.ID() + ";");;
+        }
     }
 
     @Override
