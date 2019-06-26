@@ -168,10 +168,14 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterLlamadoFuncion(SLParser.LlamadoFuncionContext ctx){
-        if(llamadoFuncion.parametros != null){
-            llamadoFuncion.ID + "(" + llamadoFuncion.parametros + ");"
-        }else{
-            llamadoFuncion.ID + "();"
+        try {
+            if (ctx.parametros() != null) {
+                file.write(ctx.ID() + "(" + ctx.parametros() + ");");
+            } else {
+                file.write(ctx.ID() + "();");
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
     }
 
