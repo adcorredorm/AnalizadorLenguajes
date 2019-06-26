@@ -11,7 +11,8 @@ public class Translator extends SLBaseListener{
     protected static void write(String s) {
         try {
             for (int i = 0; i < nested ; i++)
-                file.write("\t");
+                file.write(s + "\t");
+                file.flush();
             file.flush();
         } catch (Exception e) {
             System.err.println(e);
@@ -121,7 +122,9 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion_campo(SLParser.Declaracion_campoContext ctx){
-
+        write("class " + ctx.ID() + "{");
+        write(getTipo(ctx.tipo_dato()) + " " + ctx.ID() + ";");
+        write("}");
     }
 
     @Override
