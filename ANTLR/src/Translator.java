@@ -241,41 +241,32 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterCondicional(SLParser.CondicionalContext ctx){
-        write("if(" + ctx.logico().getText() + "){\n");
-        for (int i = 0; i < ctx.sentencia().size(); i++) {
-            write(ctx.sentencia().get(i).getText());
-        }
+        write("if(" + ctx.logico().getText() + "){");
+
     }
 
     @Override
     public void exitCondicional(SLParser.CondicionalContext ctx){
-        write("\n}");
+        write("}");
     }
 
     @Override
     public void enterSino_si(SLParser.Sino_siContext ctx){
-        write("else if(" + ctx.logico().getText() + "){");
-        for (int i = 0; i < ctx.sentencia().size(); i++) {
-            write(ctx.sentencia().get(i).getText());
-        }
+        write("}else if(" + ctx.logico().getText() + "){");
     }
 
     @Override
     public void exitSino_si(SLParser.Sino_siContext ctx){
-        write("\n}");
+
     }
 
     @Override
     public void enterSino(SLParser.SinoContext ctx){
-        write("else{");
-        for (int i = 0; i < ctx.sentencia().size(); i++) {
-            write(ctx.sentencia().get(i).getText());
-        }
+        write("}else{");
     }
 
     @Override
     public void exitSino(SLParser.SinoContext ctx){
-        write("\n}");
     }
 
     @Override
