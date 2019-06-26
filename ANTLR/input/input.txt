@@ -12,7 +12,7 @@ fin
 
 subrutina fact(valor: numerico) retorna numerico
 var
-    rta: numerico[2]
+    rta: numerico
 inicio
     si(valor == 0){
         rta = 1
