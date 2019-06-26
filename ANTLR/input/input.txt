@@ -1,6 +1,8 @@
 // Comentario
 var
     n, suma, k : numerico
+const
+    a = 10
 
 inicio
     imprimir ("Suma pares hasta n."," Ingrese n: ")
