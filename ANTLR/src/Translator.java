@@ -231,6 +231,7 @@ public class Translator extends SLBaseListener{
     @Override
     public void enterEstructura_control(SLParser.Estructura_controlContext ctx){
 
+
     }
 
     @Override
@@ -240,32 +241,41 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterCondicional(SLParser.CondicionalContext ctx){
-
+        write("if(" + ctx.logico().getText() + "){\n");
+        for (int i = 0; i < ctx.sentencia().size(); i++) {
+            write(ctx.sentencia().get(i).getText());
+        }
     }
 
     @Override
     public void exitCondicional(SLParser.CondicionalContext ctx){
-
+        write("\n}");
     }
 
     @Override
     public void enterSino_si(SLParser.Sino_siContext ctx){
-
+        write("else if(" + ctx.logico().getText() + "){");
+        for (int i = 0; i < ctx.sentencia().size(); i++) {
+            write(ctx.sentencia().get(i).getText());
+        }
     }
 
     @Override
     public void exitSino_si(SLParser.Sino_siContext ctx){
-
+        write("\n}");
     }
 
     @Override
     public void enterSino(SLParser.SinoContext ctx){
-
+        write("else{");
+        for (int i = 0; i < ctx.sentencia().size(); i++) {
+            write(ctx.sentencia().get(i).getText());
+        }
     }
 
     @Override
     public void exitSino(SLParser.SinoContext ctx){
-
+        write("\n}");
     }
 
     @Override
