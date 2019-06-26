@@ -386,7 +386,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterNumerico(SLParser.NumericoContext ctx){
-
+        write(ctx.getText());
     }
 
     @Override
@@ -428,7 +428,7 @@ public class Translator extends SLBaseListener{
             builder.append(visitLogico(ctx.logico(0)));
             builder.append("||");
             builder.append(visitLogico(ctx.logico(1)));
-        }else{
+        }else if(ctx.Tk_par_izq() != null){
             builder.append("(");
             builder.append(visitLogico(ctx.logico(0)));
             builder.append(")");
@@ -474,7 +474,12 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterComparacion(SLParser.ComparacionContext ctx){
-
+        builder = new StringBuilder();
+        if(ctx.numerico().size() > 0){
+            write(ctx.OP_COMP().getText());
+        }else{
+            write(ctx.OP_IDEN().getText());
+        }
     }
 
     @Override
