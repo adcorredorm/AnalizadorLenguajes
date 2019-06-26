@@ -17,6 +17,16 @@ public interface SLListener extends ParseTreeListener {
 	 */
 	void exitInicio(SLParser.InicioContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SLParser#main}.
+	 * @param ctx the parse tree
+	 */
+	void enterMain(SLParser.MainContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SLParser#main}.
+	 * @param ctx the parse tree
+	 */
+	void exitMain(SLParser.MainContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SLParser#programa}.
 	 * @param ctx the parse tree
 	 */
