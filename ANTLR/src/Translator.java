@@ -19,6 +19,15 @@ public class Translator extends SLBaseListener{
         }
     }
 
+    protected static void write2(String s) {
+        try {
+            file.write(s);
+            file.flush();
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }
+
     private String getTipo(SLParser.DatoContext dato){
         if( dato.cadena() != null )
             return "String";
@@ -68,7 +77,7 @@ public class Translator extends SLBaseListener{
 
     @Override public void exitMain(SLParser.MainContext ctx){
         nested --;
-        write("}\n");
+        write("}\n\n");
     }
 
     @Override
@@ -156,25 +165,27 @@ public class Translator extends SLBaseListener{
         if( ctx.metodo()!= null )
             header += "void ";
         else if( ctx.funcion().tipo_dato() != null ){
-            header += getTipo( ctx.funcion().tipo_dato() );
-        } else
-        ctx.subrutina_base().ID();
-
-
+            header += getTipo(ctx.funcion().tipo_dato())+" ";;
+        }  else
+            header += ctx.funcion().ID().getText() + " ";
+        write(header);
     }
 
     @Override
     public void exitSubrutina(SLParser.SubrutinaContext ctx){
-
+        nested--;
+        write("}\n\n");
     }
 
     @Override
     public void enterSubrutina_base(SLParser.Subrutina_baseContext ctx){
+        write2(ctx.ID().getText()+"(");
     }
 
     @Override
     public void exitSubrutina_base(SLParser.Subrutina_baseContext ctx){
-
+        write2("){\n");
+        nested++;
     }
 
     @Override
