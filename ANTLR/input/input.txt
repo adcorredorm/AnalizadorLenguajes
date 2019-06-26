@@ -15,4 +15,17 @@ inicio
         suma = suma + k
     }
     imprimir ("La suma es ", suma)
+
+    si ( suma >= 95 )
+        {
+          suma = n5 + 1
+        sino si ( pnt >= 85 )
+          n3 = n3 + 1
+        sino si ( pnt < 60 )
+          n1 = n1 + 1
+         sino
+         m = m +3
+        }
+
+
 fin

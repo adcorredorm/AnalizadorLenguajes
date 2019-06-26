@@ -12,7 +12,6 @@ public class Translator extends SLBaseListener{
         try {
             for (int i = 0; i < nested ; i++)
                 file.write("\t");
-            file.write(s);
             file.flush();
         } catch (Exception e) {
             System.err.println(e);
@@ -219,7 +218,11 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterLlamadoFuncion(SLParser.LlamadoFuncionContext ctx){
-
+        if (ctx.parametros() != null) {
+            write(ctx.ID() + "(" + ctx.parametros().getText() + ");");
+        } else {
+            write(ctx.ID() + "();");
+        }
     }
 
     @Override
@@ -239,6 +242,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterAsignacion(SLParser.AsignacionContext ctx){
+        write(ctx.identificador().getText() + "=" + ctx.dato().getText() + ";");
 
     }
 
@@ -250,6 +254,7 @@ public class Translator extends SLBaseListener{
     @Override
     public void enterEstructura_control(SLParser.Estructura_controlContext ctx){
 
+
     }
 
     @Override
@@ -259,17 +264,18 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterCondicional(SLParser.CondicionalContext ctx){
+        write("if(" + ctx.logico().getText() + "){");
 
     }
 
     @Override
     public void exitCondicional(SLParser.CondicionalContext ctx){
-
+        write("}");
     }
 
     @Override
     public void enterSino_si(SLParser.Sino_siContext ctx){
-
+        write("}else if(" + ctx.logico().getText() + "){");
     }
 
     @Override
@@ -279,22 +285,21 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterSino(SLParser.SinoContext ctx){
-
+        write("}else{");
     }
 
     @Override
     public void exitSino(SLParser.SinoContext ctx){
-
     }
 
     @Override
     public void enterMientras(SLParser.MientrasContext ctx){
-
+        write("while(" + ctx.logico().getText() + "){");
     }
 
     @Override
     public void exitMientras(SLParser.MientrasContext ctx){
-
+        write("}"):
     }
 
     @Override
