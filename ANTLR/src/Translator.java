@@ -7,14 +7,15 @@ public class Translator extends SLBaseListener{
     protected static BufferedWriter file;
     protected String class_name;
 
-    protected static void write(String s){
-        try{
+    protected static void write(String s) {
+        try {
             file.write(s);
             file.newLine();
             file.flush();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println(e);
         }
+    }
 
     private String tipo(SLParser.DatoContext dato){
         if( dato.cadena()!= null )
@@ -218,6 +219,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterAsignacion(SLParser.AsignacionContext ctx){
+        write(ctx.identificador().getText() + "=" + ctx.dato().getText() + ";");
 
     }
 
