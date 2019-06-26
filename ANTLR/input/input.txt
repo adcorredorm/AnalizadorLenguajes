@@ -4,7 +4,7 @@ var
 const
     b = 9
     c = 'asdasd'
-    v = true
+    v = TRUE
 
 inicio
     imprimir ("Suma pares hasta n."," Ingrese n: ")

@@ -19,7 +19,7 @@ public class Translator extends SLBaseListener{
         }
     }
 
-    private String tipo(SLParser.DatoContext dato){
+    private String getTipo(SLParser.DatoContext dato){
         if( dato.cadena() != null )
             return "String";
         if( dato.numerico() != null )
@@ -28,6 +28,15 @@ public class Translator extends SLBaseListener{
             return "boolean";
         else
             return dato.identificador().getText();
+    }
+
+    private String getTipo(SLParser.Tipo_datoContext tipoDato){
+        if( tipoDato.getText().equals("cadena") )
+            return "String";
+        if( tipoDato.getText().equals("numerico") )
+            return "double";
+        else
+            return "boolean";
     }
 
     @Override
@@ -40,9 +49,7 @@ public class Translator extends SLBaseListener{
         }catch (Exception e){
             System.out.println(e);
         }
-        write("public class "+class_name+"{\n");
-        nested ++;
-        write("public static void main(String[] args){\n");
+        write("public class "+class_name+"{\n\n");
         nested ++;
     }
 
@@ -54,11 +61,14 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterMain(SLParser.MainContext ctx){
-        write("public static void main(String[] args){\n\n");
+
+        write("public static void main(String[] args){\n");
+        nested ++;
     }
 
     @Override public void exitMain(SLParser.MainContext ctx){
-        write("\n}\n");
+        nested --;
+        write("}\n");
     }
 
     @Override
@@ -92,7 +102,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion_constante(SLParser.Declaracion_constanteContext ctx){
-        write("final " + tipo(ctx.dato()) + " " + ctx.identificador().getText() + " " + ctx.Tk_asignacion().getText() + " " + ctx.dato().getText()+" ;\n");
+        write("final " + getTipo(ctx.dato()) + " " + ctx.identificador().getText() + " " + ctx.Tk_asignacion().getText() + " " + ctx.dato().getText()+";\n");
     }
 
     @Override
@@ -142,6 +152,14 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterSubrutina(SLParser.SubrutinaContext ctx){
+        String header = "public static ";
+        if( ctx.metodo()!= null )
+            header += "void ";
+        else if( ctx.funcion().tipo_dato() != null ){
+            header += getTipo( ctx.funcion().tipo_dato() );
+        } else
+        ctx.subrutina_base().ID();
+
 
     }
 
@@ -152,7 +170,6 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterSubrutina_base(SLParser.Subrutina_baseContext ctx){
-
     }
 
     @Override
@@ -293,7 +310,7 @@ public class Translator extends SLBaseListener{
     @Override
     public void enterDesde(SLParser.DesdeContext ctx){
         String var = ctx.ID().getText();
-        write("for(int " + var + "=");
+        write("for(int " + var + " = ");
         write(ctx.numerico(0).getText());
         write("; " + var + " < ");
         write(ctx.numerico(1).getText());
@@ -305,11 +322,13 @@ public class Translator extends SLBaseListener{
             write("++");
         }
         write("){\n");
+        nested ++;
     }
 
     @Override
     public void exitDesde(SLParser.DesdeContext ctx){
-        write("\n}\n");
+        nested --;
+        write("}\n");
     }
 
     @Override
