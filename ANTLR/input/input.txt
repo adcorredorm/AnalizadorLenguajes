@@ -16,3 +16,30 @@ inicio
     }
     imprimir ("La suma es ", suma)
 fin
+
+subrutina calcular_suma (entero_tope : numerico)
+/*
+  Ejemplo de subrutina que recibe un parametro.
+*/
+var
+  k : numerico
+  inicio
+  tot = 0
+  desde k = 1 hasta entero_tope
+  {
+    tot = tot + k
+  }
+fin
+
+subrutina entero (n : numerico) retorna numerico
+var
+  ent : numerico
+inicio
+  ent = 0
+  mientras ( n >= 1 )
+  {
+    ent = ent + 1
+    n = n - 1
+  }
+  retorna ( ent )
+fin
