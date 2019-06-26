@@ -6,9 +6,12 @@ public class Translator extends SLBaseListener{
 
     protected static BufferedWriter file;
     protected String class_name;
+    protected static int nested = 0;
 
     protected static void write(String s) {
         try {
+            for (int i = 0; i < nested ; i++)
+                file.write("\t");
             file.write(s);
             file.flush();
         } catch (Exception e) {
@@ -37,18 +40,20 @@ public class Translator extends SLBaseListener{
         }catch (Exception e){
             System.out.println(e);
         }
-
-        write("public static void main(String[] args){");
+        write("public class "+class_name+"{\n");
+        nested ++;
+        write("public static void main(String[] args){\n");
+        nested ++;
     }
 
     @Override
     public void exitInicio(SLParser.InicioContext ctx){
-
+        nested --;
+        write("}\n");
     }
 
     @Override
     public void enterPrograma(SLParser.ProgramaContext ctx){
-
     }
 
     @Override
@@ -58,11 +63,6 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion(SLParser.DeclaracionContext ctx){
-        try {
-            file.write("Hola");
-        }catch(Exception e){
-            System.out.println(e);
-        }
     }
 
     @Override
@@ -82,13 +82,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion_constante(SLParser.Declaracion_constanteContext ctx){
-        try {
-            System.out.println("Pasó por aquí");
-            file.write("final " + tipo(ctx.dato()) + " " + ctx.identificador().getText() + " " + ctx.Tk_asignacion().getText() + " " + ctx.dato().getText()+" ;\n");
-            file.flush();
-        } catch (Exception e){
-            System.out.println(e);
-        }
+        write("final " + tipo(ctx.dato()) + " " + ctx.identificador().getText() + " " + ctx.Tk_asignacion().getText() + " " + ctx.dato().getText()+" ;\n");
     }
 
     @Override
