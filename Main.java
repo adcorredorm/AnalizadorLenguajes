@@ -47,7 +47,6 @@ public class Main{
 	}
 
 	public static void impr_vect(double v){
-[5];
 		double k;
 		for(int k = 1; k < alen(v); k++){
 			System.out.println(v[k] + j );			

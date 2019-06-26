@@ -191,6 +191,10 @@ public class Translator extends SLBaseListener{
             if(ctx.tipo_dato().estructura() != null){
                 write(getTipo(ctx.tipo_dato()) + "[] " + ctx.ID().toString().substring(1,ctx.ID().toString().length()-1));
                 write2(" = new " + getTipo(ctx.tipo_dato()));
+                for(SLParser.NumericoContext num: ctx.tipo_dato().estructura().dim().numerico())
+                    write2("[" + num.getText() + "]");
+                write2(";\n");
+
             }else {
                 write(getTipo(ctx.tipo_dato()) + " " +
                         ctx.ID().toString().substring(1, ctx.ID().toString().length() - 1) + ";\n"
@@ -210,7 +214,10 @@ public class Translator extends SLBaseListener{
         if( ctx.metodo()!= null )
             write2("void ");
         else if( ctx.funcion().tipo_dato() != null ){
-            write2(getTipo(ctx.funcion().tipo_dato()).trim() + " ");
+            if(ctx.funcion().tipo_dato().estructura() != null)
+                enterEstructura(ctx.funcion().tipo_dato().estructura());
+            else
+                write2(getTipo(ctx.funcion().tipo_dato()).trim() + " ");
         }  else
             write2(ctx.funcion().ID().getText().trim() + " ");
     }
@@ -582,14 +589,12 @@ public class Translator extends SLBaseListener{
     @Override
     public void exitEstructura(SLParser.EstructuraContext ctx){
 
+
     }
 
     @Override
     public void enterDim(SLParser.DimContext ctx){
-        for(SLParser.NumericoContext num: ctx.numerico())
-            write2("[" + num.getText() + "]");
-        write2(";\n");
-    }
+        }
 
     @Override
     public void exitDim(SLParser.DimContext ctx){
