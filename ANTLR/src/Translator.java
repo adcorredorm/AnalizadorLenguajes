@@ -15,7 +15,6 @@ public class Translator extends SLBaseListener{
         try {
             for (int i = 0; i < nested ; i++)
                 file.write("\t");
-
                 file.write(s);
                 file.flush();
         } catch (Exception e) {
@@ -107,7 +106,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void exitDeclaracion(SLParser.DeclaracionContext ctx){
-        write2("\n");
+        write("\n");
     }
 
     @Override
@@ -122,12 +121,12 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion_constante(SLParser.Declaracion_constanteContext ctx){
-        write("final " + getTipo(ctx.dato()) + " " + ctx.identificador().getText() + " " + ctx.Tk_asignacion().getText() + " " + ctx.dato().getText()+";\n");
+        write("final " + getTipo(ctx.dato()) + " " + ctx.identificador().getText() + " " + ctx.Tk_asignacion().getText() + " " + ctx.dato().getText()+";");
     }
 
     @Override
     public void exitDeclaracion_constante(SLParser.Declaracion_constanteContext ctx){
-
+        write("\n");
     }
 
     @Override
@@ -142,14 +141,16 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion_campo(SLParser.Declaracion_campoContext ctx){
-        write("class " + ctx.ID() + "{");
-        write(getTipo(ctx.tipo_dato()) + " " + ctx.ID() + ";");
-        write("}");
+        write("class " + ctx.ID() + "{\n");
+        nested++;
+        write(getTipo(ctx.tipo_dato()) + " " + ctx.ID() + ";" + "\n");
+        nested--;
+        write("}\n");
     }
 
     @Override
     public void exitDeclaracion_campo(SLParser.Declaracion_campoContext ctx){
-
+        write("\n");
     }
 
     @Override
@@ -262,7 +263,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void exitLlamadoFuncion(SLParser.LlamadoFuncionContext ctx){
-
+        write("\n");
     }
 
     @Override
@@ -297,17 +298,20 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterCondicional(SLParser.CondicionalContext ctx){
-        write("if(" + ctx.logico().getText() + "){");
+        write("if(" + ctx.logico().getText() + "){\n");
+        nested++;
     }
 
     @Override
     public void exitCondicional(SLParser.CondicionalContext ctx){
+        nested--;
         write("}");
     }
 
     @Override
     public void enterSino_si(SLParser.Sino_siContext ctx){
-        write("}else if(" + ctx.logico().getText() + "){");
+        write("}else if(" + ctx.logico().getText() + "){\n");
+        nested++;
     }
 
     @Override
@@ -317,7 +321,9 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterSino(SLParser.SinoContext ctx){
-        write("}else{");
+        nested--;
+        write("}else{\n");
+        nested++;
     }
 
     @Override
@@ -327,7 +333,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterMientras(SLParser.MientrasContext ctx){
-        write("while(" + ctx.logico().getText() + "){");
+        write("while(" + ctx.logico().getText() + "){\n");
     }
 
     @Override
@@ -390,28 +396,30 @@ public class Translator extends SLBaseListener{
     @Override
     public void enterCaso(SLParser.CasoContext ctx){
         if(first == true){
-            write2("if(" + ctx.logico().getText() + "){");
+            write("if(" + ctx.logico().getText() + "){\n");
         }else{
-            write2("else if(" + ctx.logico().getText() + "){");
+            write("else if(" + ctx.logico().getText() + "){\n");
         }
+        nested++;
         first = false;
     }
 
     @Override
     public void exitCaso(SLParser.CasoContext ctx){
-
-        write2("}");
+        nested--;
+        write("}");
     }
 
     @Override
     public void enterCaso_default(SLParser.Caso_defaultContext ctx){
-        write2("else{");
+        write("else{\n");
+        nested++;
     }
 
     @Override
     public void exitCaso_default(SLParser.Caso_defaultContext ctx){
-        write2("}");
-
+        write("}");
+        nested--;
     }
 
     @Override
