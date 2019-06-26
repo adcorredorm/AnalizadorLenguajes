@@ -1,11 +1,3 @@
-// Comentario
-var
-    n, suma, k : numerico
-const
-    b = 9
-    c = 'asdasd'
-    v = true
-
 inicio
     imprimir ("Suma pares hasta n."," Ingrese n: ")
     leer (n)

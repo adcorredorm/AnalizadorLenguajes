@@ -1,20 +1,3 @@
-	public static void main(String[] args){
-	final double b = 9 ;
-	final double b = 9 ;
-	final String c = 'asdasd' ;
-	final String c = 'asdasd' ;
-	final String v = true ;
-	final String v = true ;
-	public static void main(String[] args){
-
-	public static void main(String[] args){
-
-	do{
-	do{
-	true);
-	true);
+public static void main(String[] args){
+	if(let>=aandlet<=b){	if(let>=aandlet<=b){	msg = asdf;	msg = asdf;	}	}	else if(let>=123123andlet<=12){	else if(let>=123123andlet<=12){	msg = asdfasd;	msg = asdfasd;	}	}	else if(let>=2andlet<=142){	else if(let>=2andlet<=142){	msg = asdfadf;	msg = asdfadf;	}	}	else{	else{	msg = basdfadsf;	msg = basdfadsf;	}	}	}
 	
-}
-	
-}
-	}

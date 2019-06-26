@@ -1,6 +1,8 @@
 import org.antlr.v4.runtime.tree.ErrorNode;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.io.*;
+import java.util.List;
 
 public class Translator extends SLBaseListener{
 
@@ -21,7 +23,17 @@ public class Translator extends SLBaseListener{
         }
     }
 
-    private String tipo(SLParser.DatoContext dato){
+    protected static void write2(String s) {
+        try {
+            file.write(s);
+
+            file.flush();
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }
+
+    private String getTipo(SLParser.DatoContext dato){
         if( dato.cadena() != null )
             return "String";
         if( dato.numerico() != null )
@@ -30,6 +42,15 @@ public class Translator extends SLBaseListener{
             return "boolean";
         else
             return dato.identificador().getText();
+    }
+
+    private String getTipo(SLParser.Tipo_datoContext tipoDato){
+        if( tipoDato.getText().equals("cadena") )
+            return "String";
+        if( tipoDato.getText().equals("numerico") )
+            return "double";
+        else
+            return "boolean";
     }
 
     @Override
@@ -42,9 +63,7 @@ public class Translator extends SLBaseListener{
         }catch (Exception e){
             System.out.println(e);
         }
-        write("public class "+class_name+"{\n");
-        nested ++;
-        write("public static void main(String[] args){\n");
+        write("public class "+class_name+"{\n\n");
         nested ++;
     }
 
@@ -56,11 +75,14 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterMain(SLParser.MainContext ctx){
-        write("public static void main(String[] args){\n\n");
+
+        write("public static void main(String[] args){\n");
+        nested ++;
     }
 
     @Override public void exitMain(SLParser.MainContext ctx){
-        write("\n}\n");
+        nested --;
+        write("}\n\n");
     }
 
     @Override
@@ -94,7 +116,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion_constante(SLParser.Declaracion_constanteContext ctx){
-        write("final " + tipo(ctx.dato()) + " " + ctx.identificador().getText() + " " + ctx.Tk_asignacion().getText() + " " + ctx.dato().getText()+" ;\n");
+        write("final " + getTipo(ctx.dato()) + " " + ctx.identificador().getText() + " " + ctx.Tk_asignacion().getText() + " " + ctx.dato().getText()+";\n");
     }
 
     @Override
@@ -114,7 +136,9 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion_campo(SLParser.Declaracion_campoContext ctx){
-
+        write("class " + ctx.ID() + "{");
+        write(getTipo(ctx.tipo_dato()) + " " + ctx.ID() + ";");
+        write("}");
     }
 
     @Override
@@ -134,7 +158,11 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion_variable(SLParser.Declaracion_variableContext ctx){
-
+        if(ctx.dato() != null){
+            write(getTipo(ctx.tipo_dato()) + " " + ctx.ID() + " = " + ctx.dato() + ";");
+        }else {
+            write(getTipo(ctx.tipo_dato()) + " " + ctx.ID() + ";");;
+        }
     }
 
     @Override
@@ -144,27 +172,42 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterSubrutina(SLParser.SubrutinaContext ctx){
-
+        String header = "public static ";
+        if( ctx.metodo()!= null )
+            header += "void ";
+        else if( ctx.funcion().tipo_dato() != null ){
+            header += getTipo(ctx.funcion().tipo_dato())+" ";;
+        }  else
+            header += ctx.funcion().ID().getText() + " ";
+        write(header);
     }
 
     @Override
     public void exitSubrutina(SLParser.SubrutinaContext ctx){
-
+        nested--;
+        write("}\n\n");
     }
 
     @Override
     public void enterSubrutina_base(SLParser.Subrutina_baseContext ctx){
-
+        write2(ctx.ID().getText()+"(");
     }
 
     @Override
     public void exitSubrutina_base(SLParser.Subrutina_baseContext ctx){
-
+        write2("){\n");
+        nested++;
     }
 
+    // FALTA POR TERMINAR
     @Override
     public void enterParametros_subrutina(SLParser.Parametros_subrutinaContext ctx){
+        List<TerminalNode> IDs = ctx.ID();
+        List<SLParser.Tipo_datoContext> tipos = ctx.tipo_dato();
 
+        for (int i = 0; i < IDs.size() ; i++) {
+
+        }
     }
 
     @Override
@@ -224,7 +267,11 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterAsignacion(SLParser.AsignacionContext ctx){
-
+        write( "");
+        enterIdentificador(ctx.identificador());
+        write2(" = ");
+        enterDato( ctx.dato() );
+        write2(";\n");
     }
 
     @Override
@@ -279,7 +326,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void exitMientras(SLParser.MientrasContext ctx){
-
+        write("}");
     }
 
     @Override
@@ -301,28 +348,29 @@ public class Translator extends SLBaseListener{
     @Override
     public void enterDesde(SLParser.DesdeContext ctx){
         String var = ctx.ID().getText();
-        builder = new StringBuilder();
-
-        builder.append("for(int " + var + "=");
-        builder.append(ctx.numerico(0).getText());
-        builder.append("; " + var + " < ");
-        builder.append(ctx.numerico(1).getText());
-        builder.append("; " + var);
+        write("for(int " + var + " = ");
+        write2(ctx.numerico(0).getText());
+        write2("; " + var + " < ");
+        write2(ctx.numerico(1).getText());
+        write2("; " + var);
         if(ctx.Tk_paso() != null){
-            builder.append("+=");
-            builder.append(ctx.numerico(2).getText());
+            write2("+=");
+            write2(ctx.numerico(2).getText());
         }else{
-            builder.append("++");
+            write2("++");
         }
-        builder.append("){\n");
-
-        write(builder.toString());
+        write2("){\n");
+        nested ++;
     }
 
     @Override
     public void exitDesde(SLParser.DesdeContext ctx){
+        nested --;
         write("}\n");
     }
+
+    //Eval
+    boolean first = true;
 
     @Override
     public void enterEval(SLParser.EvalContext ctx){
@@ -331,26 +379,33 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void exitEval(SLParser.EvalContext ctx){
-
+        first = true;
     }
 
     @Override
     public void enterCaso(SLParser.CasoContext ctx){
-
+        if(first == true){
+            write("if(" + ctx.logico().getText() + "){");
+        }else{
+            write("else if(" + ctx.logico().getText() + "){");
+        }
+        first = false;
     }
 
     @Override
     public void exitCaso(SLParser.CasoContext ctx){
 
+        write("}");
     }
 
     @Override
     public void enterCaso_default(SLParser.Caso_defaultContext ctx){
-
+        write("else{");
     }
 
     @Override
     public void exitCaso_default(SLParser.Caso_defaultContext ctx){
+        write("}");
 
     }
 
@@ -366,7 +421,6 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDato(SLParser.DatoContext ctx){
-
     }
 
     @Override
@@ -376,6 +430,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterIdentificador(SLParser.IdentificadorContext ctx){
+
 
     }
 
