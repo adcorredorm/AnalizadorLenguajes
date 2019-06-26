@@ -5,7 +5,7 @@ inicio
   cls()
   imprimir_explicacion()
   imprimir ("Numero entero? ")
-  leer (n)
+  leer (n, m, asdf)
   calcular_suma (n)
   imprimir ("\nLa suma de los primeros ", n, "números enteros es ", tot)
 fin

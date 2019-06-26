@@ -271,6 +271,14 @@ public class Translator extends SLBaseListener{
                 acum += " + " + splitter[i] + " ";
             }
             write("System.out.println(" + acum + ");");
+        }else if(ctx.ID().getText().equals("leer")){
+            String [] splitter = ctx.parametros().getText().split(",");
+            write2("\n");
+            write("// Import Scanner from java.io and initialize an instance 'sc' for the following inputs:\n");
+            for (int i = 0; i < splitter.length; i++) {
+                write("String " + splitter[i] + " = " + "sc.nextLine();\n");
+            }
+
         }else {
             if (ctx.parametros() != null) {
                 write(ctx.ID().getText() + "(" + ctx.parametros().getText() + ");");

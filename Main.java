@@ -6,7 +6,12 @@ public class Main{
 		cls();		
 		imprimir_explicacion();		
 		System.out.println("Numero entero? ");		
-		leer(n);		
+
+		// Import Scanner from java.io and initialize an instance 'sc' for the following inputs:
+		String n = sc.nextLine();
+		String m = sc.nextLine();
+		String asdf = sc.nextLine();
+		
 		calcular_suma(n);		
 		System.out.println("\nLa suma de los primeros " + n  + "números enteros es "  + tot );		
 	}
