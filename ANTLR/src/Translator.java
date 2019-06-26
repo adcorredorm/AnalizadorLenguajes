@@ -12,7 +12,6 @@ public class Translator extends SLBaseListener{
         try {
             for (int i = 0; i < nested ; i++)
                 file.write(s + "\t");
-                file.flush();
             file.flush();
         } catch (Exception e) {
             System.err.println(e);
@@ -272,6 +271,7 @@ public class Translator extends SLBaseListener{
     @Override
     public void enterCondicional(SLParser.CondicionalContext ctx){
         write("if(" + ctx.logico().getText() + "){");
+
     }
 
     @Override
@@ -359,14 +359,15 @@ public class Translator extends SLBaseListener{
     public void enterCaso(SLParser.CasoContext ctx){
         if(first == true){
             write("if(" + ctx.logico().getText() + "){");
-            first = false;
         }else{
             write("else if(" + ctx.logico().getText() + "){");
         }
+        first = false;
     }
 
     @Override
     public void exitCaso(SLParser.CasoContext ctx){
+
         write("}");
     }
 
@@ -378,6 +379,7 @@ public class Translator extends SLBaseListener{
     @Override
     public void exitCaso_default(SLParser.Caso_defaultContext ctx){
         write("}");
+
     }
 
     @Override
