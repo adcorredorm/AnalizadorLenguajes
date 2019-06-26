@@ -1,10 +1,24 @@
 import org.antlr.v4.runtime.tree.ErrorNode;
 
+import java.io.*;
+
 public class Translator extends SLBaseListener{
+
+    protected static BufferedWriter file;
+    protected String class_name;
 
     @Override
     public void enterInicio(SLParser.InicioContext ctx){
         System.out.println("Inicia el analisis");
+        try {
+            if(ctx.programa() != null) class_name = ctx.programa().ID().getText();
+            else class_name = "Main";
+
+            file = new BufferedWriter(new FileWriter(class_name + ".java"));
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
     }
 
     @Override
