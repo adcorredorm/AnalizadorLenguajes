@@ -1,0 +1,42 @@
+var
+    arr: vector[5] numerico
+    aux, aux2: numerico
+const
+    min = 0
+    max = 1
+    prom = "Ingrese el tamaño"
+inicio
+    imprimir(prom)
+    leer(size)
+
+    desde i = 0 hasta size paso 1{
+        leer(aux)
+        arr[i] = aux
+    }
+
+    imprimir("Elija su opcion: 0 si es minimo y 1 si es maximo")
+    leer(opcion)
+
+    eval{
+        caso (opcion == min)
+            aux = 1
+            aux2 = arr[0]
+            repetir
+                si(aux2 < arr[aux]){
+                    aux2 = arr[aux]
+                }
+            hasta(aux == size)
+        sino
+            aux = 1
+            aux2 = arr[0]
+            mientras(aux < size){
+                si(aux2 > arr[aux]){
+                    aux2 = arr[aux]
+                }
+            }
+    }
+
+    imprimir(aux2)
+
+
+fin

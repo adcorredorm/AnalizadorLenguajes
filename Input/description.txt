@@ -1,75 +1,75 @@
-TRUE tk_logico
-FALSE tk_logico
-SI tk_logico
-NO tk_logico
+TRUE Tk_logico
+FALSE Tk_logico
+SI Tk_logico
+NO Tk_logico
 
-si tk_if
-sino tk_elseif
+si Tk_if
+sino Tk_elseif
 
-and tk_conjunción
-or tk_disyunción
-not tk_negación
+and Tk_conjunción
+or Tk_disyunción
+not Tk_negación
 
-matriz tk_matriz
-vector tk_vector
-+ tk_suma
-- tk_resta
-* tk_asterísco
-/ tk_división
-% tk_módulo
-^ tk_potencia
+matriz Tk_matriz
+vector Tk_vector
++ Tk_suma
+- Tk_resta
+* Tk_asterísco
+/ Tk_división
+% Tk_módulo
+^ Tk_potencia
 
-= tk_asignacion
-< tk_menor
-> tk_mayor
-<= tk_menor_o_igual
->= tk_mayor_o_igual
-== tk_igual_que
-<> tk_distinto_de
+= Tk_asignacion
+< Tk_menor
+> Tk_mayor
+<= Tk_menor_o_igual
+>= Tk_mayor_o_igual
+== Tk_igual_que
+<> Tk_distinto_de
 
-= tk_asignacion
-. tk_punto
-, tk_coma
-; tk_punto_y_coma
-: tk_dospuntos
+= Tk_asignacion
+. Tk_punto
+, Tk_coma
+; Tk_punto_y_coma
+: Tk_dospuntos
 
-( tk_par_izq
-) tk_par_der
-{ tk_llave_izq
-} tk_llave_der
-[ tk_corchete_izq
-] tk_corchete_der
+( Tk_par_izq
+) Tk_par_der
+{ Tk_llave_izq
+} Tk_llave_der
+[ Tk_corchete_izq
+] Tk_corchete_der
 
-var tk_var
-variables tk_var
-const tk_const
-constantes tk_const
-tipos tk_tipos
-registro tk_registro
+var Tk_var
+variables Tk_var
+const Tk_const
+constantes Tk_const
+tipos Tk_tipos
+registro Tk_registro
 
-cadena tk_cadenaRW
-logico tk_logicoRW
-numerico tk_numericoRW
+cadena Tk_cadenaRW
+logico Tk_logicoRW
+numerico Tk_numericoRW
 
-archivo tk_archivo
-lib tk_lib
-libext tk_libext
+archivo Tk_archivo
+lib Tk_lib
+libext Tk_libext
 
-caso tk_caso
-eval tk_eval
+caso Tk_caso
+eval Tk_eval
 
-desde tk_desde
-hasta tk_hasta
-paso tk_paso
-mientras tk_mientras
-repetir tk_repetir
-inicio tk_inicio
-fin tk_fin
+desde Tk_desde
+hasta Tk_hasta
+paso Tk_paso
+mientras Tk_mientras
+repetir Tk_repetir
+inicio Tk_inicio
+fin Tk_fin
 
-... tk_puntos_suspensivos
+... Tk_puntos_suspensivos
 
-subrutina tk_subrutina
-retorna tk_retorna
-ref tk_ref
+subrutina Tk_subrutina
+retorna Tk_retorna
+ref Tk_ref
 
-programa tk_programa
+programa Tk_programa

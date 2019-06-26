@@ -1,0 +1,25 @@
+programa Recursivo
+
+var
+    res: numerico
+    x: numerico
+
+inicio
+    leer(x)
+    res = fact(x)
+    imprimir(res)
+fin
+
+subrutina fact(valor: numerico) retorna numerico
+var
+    rta: numerico[2]
+inicio
+    si(valor == 0){
+        rta = 1
+    sino
+        rta = fact(valor - 1)
+    }
+
+    retorna(valor * rta)
+
+fin
