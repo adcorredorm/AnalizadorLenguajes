@@ -12,7 +12,6 @@ public class Translator extends SLBaseListener{
     private StringBuilder builder;
 
     protected static void write(String s) {
-        System.out.println(s);
         try {
             for (int i = 0; i < nested ; i++)
                 file.write("\t");
@@ -72,6 +71,12 @@ public class Translator extends SLBaseListener{
     public void exitInicio(SLParser.InicioContext ctx){
         nested --;
         write("}\n");
+
+        try{
+            file.close();
+        }catch(Exception e){
+            System.out.println(e);
+        }
     }
 
     @Override
@@ -339,11 +344,10 @@ public class Translator extends SLBaseListener{
     public void exitRepetir_hasta(SLParser.Repetir_hastaContext ctx){
         builder = new StringBuilder();
 
-        builder.append("}while(");
-        builder.append(visitLogico(ctx.logico()));
-        builder.append(");\n");
+        write("}while(");
+        write2(visitLogico(ctx.logico()));
+        write2(");\n");
 
-        write(builder.toString());
     }
 
     @Override
@@ -469,25 +473,27 @@ public class Translator extends SLBaseListener{
         builder = new StringBuilder();
         if(ctx.Tk_logico() != null){
             if(ctx.Tk_logico().getText().equals("TRUE") || ctx.Tk_logico().getText().equals("SI")){
-                builder.append("true");
+                write2("true");
             }else{
-                builder.append("false");
+                write2("false");
             }
         }else if(ctx.Tk_negacion() != null){
-            builder.append("!");
-            builder.append(visitLogico(ctx.logico(0)));
+            write2("!");
+            write2(visitLogico(ctx.logico(0)));
         }else if(ctx.Tk_conjuncion() != null){
-            builder.append(visitLogico(ctx.logico(0)));
-            builder.append("&&");
-            builder.append(visitLogico(ctx.logico(1)));
+            write2(visitLogico(ctx.logico(0)));
+            write2(" && ");
+            write2(visitLogico(ctx.logico(1)));
         }else if(ctx.Tk_disyuncion() != null){
-            builder.append(visitLogico(ctx.logico(0)));
-            builder.append("||");
-            builder.append(visitLogico(ctx.logico(1)));
+            write2(visitLogico(ctx.logico(0)));
+            write2(" || ");
+            write2(visitLogico(ctx.logico(1)));
         }else if(ctx.Tk_par_izq() != null){
-            builder.append("(");
-            builder.append(visitLogico(ctx.logico(0)));
-            builder.append(")");
+            write2("(");
+            write2(visitLogico(ctx.logico(0)));
+            write2(")");
+        }else if(ctx.llamadoFuncion_parametro() != null){
+            visitLlamadoFuncion_parametro(ctx.llamadoFuncion_parametro());
         }
 
         return builder.toString();
@@ -530,12 +536,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterComparacion(SLParser.ComparacionContext ctx){
-        builder = new StringBuilder();
-        if(ctx.numerico().size() > 0){
-            write(ctx.OP_COMP().getText());
-        }else{
-            write(ctx.OP_IDEN().getText());
-        }
+        write(ctx.OP_COMP().getText());
     }
 
     @Override
@@ -546,5 +547,18 @@ public class Translator extends SLBaseListener{
     @Override
     public void visitErrorNode(ErrorNode node){
 
+    }
+
+    @Override
+    public void enterLlamadoFuncion_parametro(SLParser.LlamadoFuncion_parametroContext ctx) {
+
+    }
+
+    private void visitLlamadoFuncion_parametro(SLParser.LlamadoFuncion_parametroContext ctx) {
+        if (ctx.parametros() != null) {
+            write2(ctx.ID() + "(" + ctx.parametros().getText() + ")");
+        } else {
+            write2(ctx.ID() + "()");
+        }
     }
 }

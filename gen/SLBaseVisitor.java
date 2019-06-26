@@ -219,6 +219,13 @@ public class SLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements SLV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitLlamadoFuncion_parametro(SLParser.LlamadoFuncion_parametroContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitTipo_dato(SLParser.Tipo_datoContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

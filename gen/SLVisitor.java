@@ -184,6 +184,12 @@ public interface SLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCaso_default(SLParser.Caso_defaultContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SLParser#llamadoFuncion_parametro}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLlamadoFuncion_parametro(SLParser.LlamadoFuncion_parametroContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SLParser#tipo_dato}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

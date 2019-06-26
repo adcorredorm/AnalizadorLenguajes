@@ -363,6 +363,18 @@ public class SLBaseListener implements SLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterLlamadoFuncion_parametro(SLParser.LlamadoFuncion_parametroContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLlamadoFuncion_parametro(SLParser.LlamadoFuncion_parametroContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterTipo_dato(SLParser.Tipo_datoContext ctx) { }
 	/**
 	 * {@inheritDoc}

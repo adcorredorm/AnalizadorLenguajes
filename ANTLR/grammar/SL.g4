@@ -82,25 +82,27 @@ eval: Tk_eval Tk_llave_izq
       Tk_llave_der;
 
 caso: Tk_caso Tk_par_izq logico Tk_par_der
-        sentencia+;
+        sentencia*;
 
 caso_default: Tk_elseif
         sentencia+;
 
 // Definiciones extendidas
 
-tipo_dato: Tk_numericoRW | Tk_cadenaRW | Tk_cadenaRW | ID | estructura | registro;
+llamadoFuncion_parametro: ID Tk_par_izq parametros? Tk_par_der;
 
-dato: cadena | numerico | logico | estructura | registro | llamadoFuncion | identificador;
+tipo_dato: Tk_numericoRW | Tk_cadenaRW | Tk_logicoRW | ID | estructura | registro;
+
+dato: cadena | numerico | logico | estructura | registro | llamadoFuncion_parametro | identificador;
 
 identificador: ID (Tk_punto identificador | Tk_corchete_izq numerico Tk_corchete_der)*;
 
-numerico: (Tk_suma | Tk_resta)? NUM | identificador | llamadoFuncion
+numerico: (Tk_suma | Tk_resta)? NUM | identificador | llamadoFuncion_parametro
         |numerico OP_MAT numerico | Tk_par_izq numerico Tk_par_der;
 
-cadena: STR | identificador | llamadoFuncion | cadena Tk_suma cadena;
+cadena: STR | identificador | llamadoFuncion_parametro | cadena Tk_suma cadena;
 
-logico: Tk_logico | identificador | llamadoFuncion
+logico: Tk_logico | identificador | llamadoFuncion_parametro
         | comparacion | Tk_negacion logico
         | logico (Tk_conjuncion | Tk_disyuncion) logico | Tk_par_izq logico Tk_par_der;
 
@@ -109,7 +111,7 @@ dim: (Tk_asterisco | numerico) (Tk_coma (Tk_asterisco | numerico))*;
 
 registro: Tk_registro Tk_llave_izq (declaracion_campo)+ Tk_llave_der;
 
-comparacion: numerico OP_COMP numerico | cadena OP_IDEN cadena;
+comparacion: (numerico | cadena) OP_COMP dato;
 
 // Definicion de Tokens
 

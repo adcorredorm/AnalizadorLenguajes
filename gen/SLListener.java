@@ -297,6 +297,16 @@ public interface SLListener extends ParseTreeListener {
 	 */
 	void exitCaso_default(SLParser.Caso_defaultContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SLParser#llamadoFuncion_parametro}.
+	 * @param ctx the parse tree
+	 */
+	void enterLlamadoFuncion_parametro(SLParser.LlamadoFuncion_parametroContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SLParser#llamadoFuncion_parametro}.
+	 * @param ctx the parse tree
+	 */
+	void exitLlamadoFuncion_parametro(SLParser.LlamadoFuncion_parametroContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SLParser#tipo_dato}.
 	 * @param ctx the parse tree
 	 */
