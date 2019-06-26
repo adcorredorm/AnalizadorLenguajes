@@ -272,7 +272,6 @@ public class Translator extends SLBaseListener{
     @Override
     public void enterCondicional(SLParser.CondicionalContext ctx){
         write("if(" + ctx.logico().getText() + "){");
-
     }
 
     @Override
@@ -343,6 +342,9 @@ public class Translator extends SLBaseListener{
         write("}\n");
     }
 
+    //Eval
+    boolean first = true;
+
     @Override
     public void enterEval(SLParser.EvalContext ctx){
 
@@ -350,27 +352,32 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void exitEval(SLParser.EvalContext ctx){
-
+        first = true;
     }
 
     @Override
     public void enterCaso(SLParser.CasoContext ctx){
-
+        if(first == true){
+            write("if(" + ctx.logico().getText() + "){");
+            first = false;
+        }else{
+            write("else if(" + ctx.logico().getText() + "){");
+        }
     }
 
     @Override
     public void exitCaso(SLParser.CasoContext ctx){
-
+        write("}");
     }
 
     @Override
     public void enterCaso_default(SLParser.Caso_defaultContext ctx){
-
+        write("else{");
     }
 
     @Override
     public void exitCaso_default(SLParser.Caso_defaultContext ctx){
-
+        write("}");
     }
 
     @Override
