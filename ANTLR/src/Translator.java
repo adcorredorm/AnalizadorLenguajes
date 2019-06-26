@@ -16,7 +16,6 @@ public class Translator extends SLBaseListener{
         try {
             for (int i = 0; i < nested ; i++)
                 file.write("\t");
-
                 file.write(s);
                 file.flush();
         } catch (Exception e) {
@@ -102,7 +101,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void exitDeclaracion(SLParser.DeclaracionContext ctx){
-        write2("\n");
+        write("\n");
     }
 
     @Override
@@ -117,12 +116,12 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion_constante(SLParser.Declaracion_constanteContext ctx){
-        write("final " + getTipo(ctx.dato()) + " " + ctx.identificador().getText() + " " + ctx.Tk_asignacion().getText() + " " + ctx.dato().getText()+";\n");
+        write("final " + getTipo(ctx.dato()) + " " + ctx.identificador().getText() + " " + ctx.Tk_asignacion().getText() + " " + ctx.dato().getText()+";");
     }
 
     @Override
     public void exitDeclaracion_constante(SLParser.Declaracion_constanteContext ctx){
-
+        write("\n");
     }
 
     @Override
@@ -141,12 +140,12 @@ public class Translator extends SLBaseListener{
         nested++;
         write(getTipo(ctx.tipo_dato()) + " " + ctx.ID() + ";" + "\n");
         nested--;
-        write("}" + "\n");
+        write("}\n");
     }
 
     @Override
     public void exitDeclaracion_campo(SLParser.Declaracion_campoContext ctx){
-
+        write("\n");
     }
 
     @Override
@@ -259,7 +258,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void exitLlamadoFuncion(SLParser.LlamadoFuncionContext ctx){
-
+        write("\n");
     }
 
     @Override
@@ -404,7 +403,7 @@ public class Translator extends SLBaseListener{
     @Override
     public void exitCaso(SLParser.CasoContext ctx){
         nested--;
-        write2("}");
+        write("}");
     }
 
     @Override
