@@ -137,9 +137,9 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion_campo(SLParser.Declaracion_campoContext ctx){
-        write("class " + ctx.ID() + "{");
-        write(getTipo(ctx.tipo_dato()) + " " + ctx.ID() + ";");
-        write("}");
+        write("class " + ctx.ID() + "{\n");
+        write(getTipo(ctx.tipo_dato()) + " " + ctx.ID() + ";" + "\n");
+        write("}" + "\n");
     }
 
     @Override
