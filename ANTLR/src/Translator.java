@@ -249,10 +249,19 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterLlamadoFuncion(SLParser.LlamadoFuncionContext ctx){
-        if (ctx.parametros() != null) {
-            write(ctx.ID() + "(" + ctx.parametros().getText() + ");");
-        } else {
-            write(ctx.ID() + "();");
+        if(ctx.ID().getText().equals("imprimir")){
+            String [] splitter = ctx.parametros().getText().split(",");
+            String acum = splitter[0];
+            for (int i = 1; i < splitter.length; i++) {
+                acum += " + " + splitter[i] + " ";
+            }
+            write("System.out.println(" + acum + ");");
+        }else {
+            if (ctx.parametros() != null) {
+                write(ctx.ID().getText() + "(" + ctx.parametros().getText() + ");");
+            } else {
+                write(ctx.ID().getText() + "();");
+            }
         }
     }
 
