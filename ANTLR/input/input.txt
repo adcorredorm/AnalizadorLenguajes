@@ -2,7 +2,9 @@
 var
     n, suma, k : numerico
 const
-    a = 10
+    b = 9
+    c = 'asdasd'
+    v = true
 
 inicio
     imprimir ("Suma pares hasta n."," Ingrese n: ")
