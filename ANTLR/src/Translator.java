@@ -1,6 +1,8 @@
 import org.antlr.v4.runtime.tree.ErrorNode;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.io.*;
+import java.util.List;
 
 public class Translator extends SLBaseListener{
 
@@ -188,9 +190,15 @@ public class Translator extends SLBaseListener{
         nested++;
     }
 
+    // FALTA POR TERMINAR
     @Override
     public void enterParametros_subrutina(SLParser.Parametros_subrutinaContext ctx){
+        List<TerminalNode> IDs = ctx.ID();
+        List<SLParser.Tipo_datoContext> tipos = ctx.tipo_dato();
 
+        for (int i = 0; i < IDs.size() ; i++) {
+
+        }
     }
 
     @Override
@@ -250,7 +258,11 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterAsignacion(SLParser.AsignacionContext ctx){
-
+        write( "");
+        enterIdentificador(ctx.identificador());
+        write2(" = ");
+        enterDato( ctx.dato() );
+        write2(";\n");
     }
 
     @Override
@@ -322,17 +334,17 @@ public class Translator extends SLBaseListener{
     public void enterDesde(SLParser.DesdeContext ctx){
         String var = ctx.ID().getText();
         write("for(int " + var + " = ");
-        write(ctx.numerico(0).getText());
-        write("; " + var + " < ");
-        write(ctx.numerico(1).getText());
-        write("; " + var);
+        write2(ctx.numerico(0).getText());
+        write2("; " + var + " < ");
+        write2(ctx.numerico(1).getText());
+        write2("; " + var);
         if(ctx.Tk_paso() != null){
-            write("+=");
-            write(ctx.numerico(2).getText());
+            write2("+=");
+            write2(ctx.numerico(2).getText());
         }else{
-            write("++");
+            write2("++");
         }
-        write("){\n");
+        write2("){\n");
         nested ++;
     }
 
@@ -384,7 +396,6 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDato(SLParser.DatoContext ctx){
-
     }
 
     @Override
@@ -394,6 +405,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterIdentificador(SLParser.IdentificadorContext ctx){
+
 
     }
 
