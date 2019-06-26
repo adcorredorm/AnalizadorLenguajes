@@ -127,7 +127,9 @@ OP_IDEN: Tk_igual_que | Tk_distinto_de;
 
 OP_MAT : Tk_suma | Tk_resta | Tk_asterisco | Tk_division | Tk_modulo | Tk_potencia;
 
-Tk_logico: 'TRUE' | 'FALSE' | 'SI' | 'NO';
+Tk_logico: Tk_verdadero | Tk_falso;
+Tk_verdadero: 'TRUE' | 'SI';
+Tk_falso: 'FALSE' | 'NO';
 Tk_if: 'si';
 Tk_elseif: 'sino';
 Tk_conjuncion: 'and';
