@@ -97,7 +97,7 @@ dato: cadena | numerico | logico | estructura | registro | llamadoFuncion_parame
 
 identificador: ID (Tk_punto identificador | Tk_corchete_izq numerico Tk_corchete_der)*;
 
-numerico: (Tk_suma | Tk_resta)? NUM | identificador | llamadoFuncion_parametro
+numerico: NUM | identificador | llamadoFuncion_parametro
         |numerico OP_MAT numerico | Tk_par_izq numerico Tk_par_der;
 
 cadena: STR | identificador | llamadoFuncion_parametro | cadena Tk_suma cadena;
@@ -119,7 +119,7 @@ COMMENT:        '/*' .*? '*/'   -> skip ;
 LINE_COMMENT:   '//' ~[\r\n]*   -> skip ;
 WS:             [ \t\r\n]+      -> skip ;
 
-NUM: [0-9]+(REAL | CTF)?;
+NUM: Tk_resta? [0-9]+(REAL | CTF)?;
 REAL: '.'[0-9]+(CTF)?;
 CTF: ('e' | 'E')('+' | '-')[0-9]+;
 
