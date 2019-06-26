@@ -26,13 +26,20 @@ public class Translator extends SLBaseListener{
         }catch (Exception e){
             System.out.println(e);
         }
-
-        write("public static void main(String[] args){");
     }
 
     @Override
     public void exitInicio(SLParser.InicioContext ctx){
 
+    }
+
+    @Override
+    public void enterMain(SLParser.MainContext ctx){
+        write("public static void main(String[] args){\n\n");
+    }
+
+    @Override public void exitMain(SLParser.MainContext ctx){
+        write("\n}\n");
     }
 
     @Override
@@ -47,11 +54,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion(SLParser.DeclaracionContext ctx){
-        try {
-            file.write("Hola");
-        }catch(Exception e){
-            System.out.println(e);
-        }
+
     }
 
     @Override
@@ -271,12 +274,24 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDesde(SLParser.DesdeContext ctx){
-
+        String var = ctx.ID().getText();
+        write("for(int " + var + "=");
+        write(ctx.numerico(0).getText());
+        write("; " + var + " < ");
+        write(ctx.numerico(1).getText());
+        write("; " + var);
+        if(ctx.Tk_paso() != null){
+            write("+=");
+            write(ctx.numerico(2).getText());
+        }else{
+            write("++");
+        }
+        write("){\n");
     }
 
     @Override
     public void exitDesde(SLParser.DesdeContext ctx){
-
+        write("\n}\n");
     }
 
     @Override

@@ -1,7 +1,8 @@
 grammar SL;
 
 // Inicio
-inicio: programa? declaracion* Tk_inicio sentencia* Tk_fin subrutina* EOF;
+inicio: programa? declaracion* main subrutina* EOF;
+main: Tk_inicio sentencia* Tk_fin;
 
 programa: Tk_programa ID Tk_pyc?;
 
