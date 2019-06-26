@@ -10,6 +10,7 @@ public class Translator extends SLBaseListener{
     protected static void write(String s){
         try{
             file.write(s);
+            file.newLine();
             file.flush();
         }catch (Exception e){
             System.err.println(e);
@@ -32,7 +33,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void exitInicio(SLParser.InicioContext ctx){
-
+        write("}");
     }
 
     @Override
@@ -47,11 +48,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion(SLParser.DeclaracionContext ctx){
-        try {
-            file.write("Hola");
-        }catch(Exception e){
-            System.out.println(e);
-        }
+
     }
 
     @Override
@@ -181,14 +178,10 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterLlamadoFuncion(SLParser.LlamadoFuncionContext ctx){
-        try {
-            if (ctx.parametros() != null) {
-                file.write(ctx.ID() + "(" + ctx.parametros() + ");");
-            } else {
-                file.write(ctx.ID() + "();");
-            }
-        }catch(Exception e){
-            System.out.println(e);
+        if (ctx.parametros() != null) {
+            write(ctx.ID() + "(" + ctx.parametros().getText() + ");");
+        } else {
+            write(ctx.ID() + "();");
         }
     }
 
