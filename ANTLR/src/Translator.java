@@ -12,6 +12,7 @@ public class Translator extends SLBaseListener{
     private StringBuilder builder;
 
     protected static void write(String s) {
+        System.out.println(s);
         try {
             for (int i = 0; i < nested ; i++) {
                 file.write("\t");
