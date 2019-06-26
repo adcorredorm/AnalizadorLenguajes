@@ -4,7 +4,7 @@ import java.io.*;
 
 public class Translator extends SLBaseListener{
 
-    protected static BufferedWriter file;
+    protected BufferedWriter file;
     protected String class_name;
 
     @Override
