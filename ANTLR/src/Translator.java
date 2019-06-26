@@ -181,7 +181,7 @@ public class Translator extends SLBaseListener{
     public void enterSubrutina(SLParser.SubrutinaContext ctx){
         String header = "public static ";
         if( ctx.metodo()!= null )
-            header += "void";
+            header += "void ";
         else if( ctx.funcion().tipo_dato() != null ){
             header += getTipo(ctx.funcion().tipo_dato()).trim();;
         }  else
@@ -205,8 +205,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void exitSubrutina_base(SLParser.Subrutina_baseContext ctx){
-        write("){\n");
-        nested++;
+
     }
 
     // FALTA POR TERMINAR
@@ -217,9 +216,11 @@ public class Translator extends SLBaseListener{
 
         int i;
         for (i = 0; i < IDs.size()-1 ; i++)
-            write(getTipo(tipos.get(i)) + " " + IDs.get(i).getText() + ", ");
+            write2(getTipo(tipos.get(i)) + " " + IDs.get(i).getText() + ", ");
 
-        write(getTipo(tipos.get(i)) + " " + IDs.get(i).getText());
+        write2(getTipo(tipos.get(i)) + " " + IDs.get(i).getText());
+        write2("){\n");
+        nested++;
     }
 
     @Override
