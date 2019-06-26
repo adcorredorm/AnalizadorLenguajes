@@ -10,13 +10,6 @@ inicio
   imprimir ("\nLa suma de los primeros ", n, "números enteros es ", tot)
 fin
 
-/* continuacijn del programa ejemplo_llamada_subrutinas */
-subrutina imprimir_explicacion()
-inicio
-  imprimir ("\nEste programa de ejemplo calcula la suma de los enteros",
-            "\npositivos comprendidos entre 1 y un valor ",
-            "que se ingresa\n")
-fin
 
 subrutina calcular_suma (entero_tope : numerico)
 /*
@@ -30,6 +23,13 @@ var
   {
     tot = tot + k
   }
+fin
+
+subrutina imprimir_explicacion()
+inicio
+  imprimir ("\nEste programa de ejemplo calcula la suma de los enteros",
+            "\npositivos comprendidos entre 1 y un valor ",
+            "que se ingresa\n")
 fin
 
 subrutina entero (n : numerico) retorna numerico

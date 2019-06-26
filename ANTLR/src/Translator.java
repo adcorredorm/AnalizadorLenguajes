@@ -179,14 +179,13 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterSubrutina(SLParser.SubrutinaContext ctx){
-        String header = "public static ";
+        write("public static ");
         if( ctx.metodo()!= null )
-            header += "void ";
+            write2("void ");
         else if( ctx.funcion().tipo_dato() != null ){
-            header += getTipo(ctx.funcion().tipo_dato()).trim();;
+            write2(getTipo(ctx.funcion().tipo_dato()).trim() + " ");
         }  else
-            header += ctx.funcion().ID().getText().trim();
-        write(header);
+            write2(ctx.funcion().ID().getText().trim() + " ");
     }
 
     @Override
@@ -200,7 +199,12 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterSubrutina_base(SLParser.Subrutina_baseContext ctx){
-        write(ctx.ID().getText()+"(");
+        if(ctx.parametros_subrutina() != null) {
+            write2(ctx.ID().getText() + "(");
+        }else{
+            write2(ctx.ID().getText() + "(){\n");
+            nested++;
+        }
     }
 
     @Override
