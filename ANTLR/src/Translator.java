@@ -271,12 +271,12 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterMientras(SLParser.MientrasContext ctx){
-
+        write("while(" + ctx.logico().getText() + "){");
     }
 
     @Override
     public void exitMientras(SLParser.MientrasContext ctx){
-
+        write("}"):
     }
 
     @Override
