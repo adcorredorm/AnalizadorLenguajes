@@ -1,7 +1,7 @@
 public class Main{
 
 	class LEXEMA{
-	double LEXEMA;
+		double LEXEMA;
 	}
 
 	boolean tk;
@@ -13,13 +13,13 @@ public class Main{
 	boolean val_time;
 
 	class INFO_PAL_RESERV{
-	boolean INFO_PAL_RESERV;
+		boolean INFO_PAL_RESERV;
 	}
 	class pal{
-	String pal;
+		String pal;
 	}
 	class lex{
-	boolean lex;
+		boolean lex;
 	}
 
 	boolean pal_reserv;
@@ -58,26 +58,26 @@ public class Main{
 	final double MAX_SIMBOLOS = 300;
 
 	class TTipo{
-	double TTipo;
+		double TTipo;
 	}
 
 	final double t_NUM = 1024;
 	final double t_TIME = 1025;
 
 	class INFO_SIMB{
-	boolean INFO_SIMB;
+		boolean INFO_SIMB;
 	}
 	class nombre{
-	String nombre;
+		String nombre;
 	}
 	class tipo{
-	boolean tipo;
+		boolean tipo;
 	}
 	class dir{
-	double dir;
+		double dir;
 	}
 	class val_inicial{
-	double val_inicial;
+		double val_inicial;
 	}
 
 	boolean tabs;
@@ -87,25 +87,25 @@ public class Main{
 	final double TOT_INSTRUCCIONES = 21;
 
 	class INSTRUCCION{
-	double INSTRUCCION;
+		double INSTRUCCION;
 	}
 	class INFO_CODIGO{
-	boolean INFO_CODIGO;
+		boolean INFO_CODIGO;
 	}
 	class inst{
-	boolean inst;
+		boolean inst;
 	}
 	class op{
-	double op;
+		double op;
 	}
 	class INFO_INSTR{
-	boolean INFO_INSTR;
+		boolean INFO_INSTR;
 	}
 	class nombre{
-	String nombre;
+		String nombre;
 	}
 	class usa_op{
-	boolean usa_op;
+		boolean usa_op;
 	}
 
 	boolean codigo;
@@ -137,7 +137,7 @@ public class Main{
 	final double MAX_MEMORIA = 500;
 
 	class ELEM_PILA{
-	double ELEM_PILA;
+		double ELEM_PILA;
 	}
 
 	boolean pila;
