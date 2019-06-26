@@ -4,26 +4,35 @@ import java.io.*;
 
 public class Translator extends SLBaseListener{
 
-    protected BufferedWriter file;
+    protected static BufferedWriter file;
     protected String class_name;
+
+    protected static void write(String s){
+        try{
+            file.write(s);
+            file.flush();
+        }catch (Exception e){
+            System.err.println(e);
+        }
+    }
 
     @Override
     public void enterInicio(SLParser.InicioContext ctx){
-        System.out.println("Inicia el analisis");
         try {
             if(ctx.programa() != null) class_name = ctx.programa().ID().getText();
             else class_name = "Main";
 
-            file = new BufferedWriter(new FileWriter(class_name + ".java"));
+            file = new BufferedWriter(new FileWriter(new File(class_name + ".java")));
         }catch (Exception e){
             System.out.println(e);
         }
 
+        write("public static void main(String[] args){");
     }
 
     @Override
     public void exitInicio(SLParser.InicioContext ctx){
-        System.out.println("Termina el analisis");
+
     }
 
     @Override
@@ -38,7 +47,11 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDeclaracion(SLParser.DeclaracionContext ctx){
-
+        try {
+            file.write("Hola");
+        }catch(Exception e){
+            System.out.println(e);
+        }
     }
 
     @Override
