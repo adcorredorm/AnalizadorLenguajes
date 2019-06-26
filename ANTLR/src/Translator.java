@@ -166,7 +166,7 @@ public class Translator extends SLBaseListener{
     @Override
     public void enterDeclaracion_variable(SLParser.Declaracion_variableContext ctx){
         if(ctx.dato() != null){
-            write(getTipo(ctx.tipo_dato()) + " " + ctx.ID().toString().substring(1,ctx.ID().toString().length()-1) + " = " + ctx.dato() + ";\n");
+            write(getTipo(ctx.tipo_dato()) + " " + ctx.ID().toString().substring(1,ctx.ID().toString().length()-1) + " = " + ctx.dato().getText() + ";\n");
         }else {
             write(getTipo(ctx.tipo_dato()) + " " + ctx.ID().toString().substring(1,ctx.ID().toString().length()-1) + ";\n");
         }
@@ -191,6 +191,9 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void exitSubrutina(SLParser.SubrutinaContext ctx){
+        if(ctx.funcion() != null)
+            write("return " + ctx.funcion().dato().getText() + ";\n");
+
         nested--;
         write("}\n\n");
     }
@@ -212,9 +215,11 @@ public class Translator extends SLBaseListener{
         List<TerminalNode> IDs = ctx.ID();
         List<SLParser.Tipo_datoContext> tipos = ctx.tipo_dato();
 
-        for (int i = 0; i < IDs.size() ; i++) {
+        int i;
+        for (i = 0; i < IDs.size()-1 ; i++)
+            write2(getTipo(tipos.get(i)) + " " + IDs.get(i).getText() + ", ");
 
-        }
+        write2(getTipo(tipos.get(i)) + " " + IDs.get(i).getText());
     }
 
     @Override
@@ -351,7 +356,7 @@ public class Translator extends SLBaseListener{
         builder = new StringBuilder();
 
         write("}while(");
-        write2(visitLogico(ctx.logico()));
+        visitLogico(ctx.logico());
         write2(");\n");
 
     }
@@ -477,8 +482,8 @@ public class Translator extends SLBaseListener{
 
     }
 
-    private String visitLogico(SLParser.LogicoContext ctx){
-        builder = new StringBuilder();
+    private void visitLogico(SLParser.LogicoContext ctx){
+
         if(ctx.Tk_logico() != null){
             if(ctx.Tk_logico().getText().equals("TRUE") || ctx.Tk_logico().getText().equals("SI")){
                 write2("true");
@@ -487,24 +492,30 @@ public class Translator extends SLBaseListener{
             }
         }else if(ctx.Tk_negacion() != null){
             write2("!");
-            write2(visitLogico(ctx.logico(0)));
+            visitLogico(ctx.logico(0));
         }else if(ctx.Tk_conjuncion() != null){
-            write2(visitLogico(ctx.logico(0)));
+            visitLogico(ctx.logico(0));
             write2(" && ");
-            write2(visitLogico(ctx.logico(1)));
+            visitLogico(ctx.logico(1));
         }else if(ctx.Tk_disyuncion() != null){
-            write2(visitLogico(ctx.logico(0)));
+            visitLogico(ctx.logico(0));
             write2(" || ");
-            write2(visitLogico(ctx.logico(1)));
+            visitLogico(ctx.logico(1));
         }else if(ctx.Tk_par_izq() != null){
             write2("(");
-            write2(visitLogico(ctx.logico(0)));
+            visitLogico(ctx.logico(0));
             write2(")");
         }else if(ctx.llamadoFuncion_parametro() != null){
             visitLlamadoFuncion_parametro(ctx.llamadoFuncion_parametro());
+        }else if(ctx.comparacion() != null){
+            if(ctx.comparacion().numerico() != null){
+                write2(ctx.comparacion().numerico().getText());
+            }else{
+                write2(ctx.comparacion().cadena().getText());
+            }
+            write2(ctx.comparacion().OP_COMP().getText());
+            write2(ctx.comparacion().dato().getText());
         }
-
-        return builder.toString();
     }
 
     @Override
@@ -544,7 +555,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterComparacion(SLParser.ComparacionContext ctx){
-        write(ctx.OP_COMP().getText());
+
     }
 
     @Override
