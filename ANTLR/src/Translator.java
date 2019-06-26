@@ -17,14 +17,14 @@ public class Translator extends SLBaseListener{
     }
 
     private String tipo(SLParser.DatoContext dato){
-        if( dato.cadena()!= null )
+        if( dato.cadena() != null )
             return "String";
-        if( dato.numerico()!= null )
+        if( dato.numerico() != null )
             return "double";
-        if( dato.logico()!= null )
+        if( dato.logico() != null )
             return "boolean";
         else
-            return dato.estructura().getText();
+            return dato.identificador().getText();
     }
 
     @Override
