@@ -246,7 +246,11 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterLlamadoFuncion(SLParser.LlamadoFuncionContext ctx){
-
+        if (ctx.parametros() != null) {
+            write(ctx.ID() + "(" + ctx.parametros().getText() + ");");
+        } else {
+            write(ctx.ID() + "();");
+        }
     }
 
     @Override
@@ -286,17 +290,17 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterCondicional(SLParser.CondicionalContext ctx){
-
+        write("if(" + ctx.logico().getText() + "){");
     }
 
     @Override
     public void exitCondicional(SLParser.CondicionalContext ctx){
-
+        write("}");
     }
 
     @Override
     public void enterSino_si(SLParser.Sino_siContext ctx){
-
+        write("}else if(" + ctx.logico().getText() + "){");
     }
 
     @Override
@@ -306,7 +310,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterSino(SLParser.SinoContext ctx){
-
+        write("}else{");
     }
 
     @Override
@@ -316,7 +320,7 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterMientras(SLParser.MientrasContext ctx){
-
+        write("while(" + ctx.logico().getText() + "){");
     }
 
     @Override
