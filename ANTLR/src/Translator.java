@@ -193,8 +193,7 @@ public class Translator extends SLBaseListener{
                 write2(" = new " + getTipo(ctx.tipo_dato()));
             }else {
                 write(getTipo(ctx.tipo_dato()) + " " +
-                        ctx.ID().toString().substring(1, ctx.ID().toString().length() - 1) + " = " +
-                        ctx.dato().getText() + "" + ";\n"
+                        ctx.ID().toString().substring(1, ctx.ID().toString().length() - 1) + ";\n"
                 );
             }
         }
@@ -587,7 +586,9 @@ public class Translator extends SLBaseListener{
 
     @Override
     public void enterDim(SLParser.DimContext ctx){
-        write2("[" + ctx.numerico().get(0).getText() + "];\n");
+        for(SLParser.NumericoContext num: ctx.numerico())
+            write2("[" + num.getText() + "]");
+        write2(";\n");
     }
 
     @Override
